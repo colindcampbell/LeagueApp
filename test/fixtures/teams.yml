@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  wins: 1
+  losses: 1
+  ties: 1
+  coach_name: MyString
+  coach_email: MyString
+  coach_phone: MyString
+  home_city: MyString
+  league_id: 
+
+two:
+  name: MyString
+  wins: 1
+  losses: 1
+  ties: 1
+  coach_name: MyString
+  coach_email: MyString
+  coach_phone: MyString
+  home_city: MyString
+  league_id: 
