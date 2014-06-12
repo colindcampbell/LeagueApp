@@ -1,0 +1,3 @@
+class BasketballStat < Stat
+
+end

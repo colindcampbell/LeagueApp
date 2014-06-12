@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604024632) do
+ActiveRecord::Schema.define(version: 20140612033556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,14 @@ ActiveRecord::Schema.define(version: 20140604024632) do
 
   add_index "leagues", ["user_id"], name: "index_leagues_on_user_id", using: :btree
 
+  create_table "locations", force: true do |t|
+    t.string   "address"
+    t.float    "lat"
+    t.float    "long"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "players", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -70,6 +78,34 @@ ActiveRecord::Schema.define(version: 20140604024632) do
   end
 
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
+
+  create_table "stats", force: true do |t|
+    t.integer  "game_id"
+    t.integer  "player_id"
+    t.integer  "points"
+    t.string   "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "assists"
+    t.integer  "rebounds"
+    t.integer  "field_goals"
+    t.integer  "fg_attempts"
+    t.integer  "fouls"
+    t.integer  "blocks"
+    t.integer  "threes"
+    t.integer  "turnovers"
+    t.integer  "touchdowns"
+    t.integer  "pass_yards"
+    t.integer  "rush_yards"
+    t.integer  "receiving_yards"
+    t.integer  "tackles"
+    t.integer  "sacks"
+    t.integer  "interceptions"
+    t.integer  "fumbles"
+  end
+
+  add_index "stats", ["game_id"], name: "index_stats_on_game_id", using: :btree
+  add_index "stats", ["player_id"], name: "index_stats_on_player_id", using: :btree
 
   create_table "teams", force: true do |t|
     t.string   "name"

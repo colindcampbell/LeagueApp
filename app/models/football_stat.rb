@@ -1,0 +1,3 @@
+class FootballStat < Stat
+	
+end
