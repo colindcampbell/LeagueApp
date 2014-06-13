@@ -1,0 +1,29 @@
+<div class="container-fluid">
+	<div class="row">
+		<h1>New user</h1>
+
+		<%= render 'form' %>
+
+		<br>
+
+		
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-2">
+		<% if current_user %>
+			<%= link_to "Logout ", session_path(session), method: :delete %>
+		<% else %>
+			<a data-toggle="modal" class="btn btn-info btn-lrg" data-target="#signinModal" data-remote="<%= new_session_path(current_user) %> #new_session_modal">Sign In</a>
+		<% end %>
+	</div>
+</div>
+
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+		           

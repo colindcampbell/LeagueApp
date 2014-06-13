@@ -1,5 +1,7 @@
 class Day < ActiveRecord::Base
   belongs_to :league
+  has_many :games
+  
 
   before_destroy :destroy_games
 
@@ -8,10 +10,10 @@ class Day < ActiveRecord::Base
   end
 
   validates_presence_of :date, message: " must be present"
-  validate :current_date
+  validate :unique_date
 
-  def current_date
-  	existing_day = self.league.days.where(:date => self.date).first
+  def unique_date
+  	existing_day = self.league.days.where(date: self.date).first
   	if existing_day
   		errors.add(:date, '( This date exists, please select another day )')
   	end

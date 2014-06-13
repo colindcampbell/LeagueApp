@@ -45,3 +45,16 @@ gem 'bcrypt-ruby'
 group :assets do
  gem 'bootstrap-modal-rails'
 end
+
+group :development, :test do
+	gem 'rspec-rails'
+	gem 'shoulda-matchers'
+end
+
+gem 'active_model_serializers'
+
+gem 'angularjs-rails'
+
+gem 'rails_12factor'
+
+

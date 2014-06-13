@@ -1,15 +1,18 @@
 class LeaguesController < ApplicationController
   before_action :set_league, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: :index
+  respond_to :html, :json
 
   # GET /leagues
-  # GET /leagues.json
   def index
-    @leagues = League.all
+    @leagues = current_user.leagues
+    respond_with @leagues
   end
 
   # GET /leagues/1
-  # GET /leagues/1.json
   def show
+    @days = @league.days
+
   end
 
   # GET /leagues/new
@@ -22,43 +25,30 @@ class LeaguesController < ApplicationController
   end
 
   # POST /leagues
-  # POST /leagues.json
   def create
     @league = League.new(league_params)
+    @league.user = current_user
 
-    respond_to do |format|
-      if @league.save
-        format.html { redirect_to @league, notice: 'League was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @league }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @league.errors, status: :unprocessable_entity }
-      end
+    if @league.save
+      redirect_to leagues_path, notice: 'League was successfully created.'
+    else
+      render action: 'new'
     end
   end
 
   # PATCH/PUT /leagues/1
-  # PATCH/PUT /leagues/1.json
   def update
-    respond_to do |format|
-      if @league.update(league_params)
-        format.html { redirect_to @league, notice: 'League was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @league.errors, status: :unprocessable_entity }
-      end
+    if @league.update(league_params)
+      redirect_to @league, notice: 'League was successfully updated.'
+    else
+      render action: 'edit'
     end
   end
 
   # DELETE /leagues/1
-  # DELETE /leagues/1.json
   def destroy
     @league.destroy
-    respond_to do |format|
-      format.html { redirect_to leagues_url }
-      format.json { head :no_content }
-    end
+    redirect_to leagues_url, notice: 'League was successfully destroyed.'
   end
 
   private
@@ -67,8 +57,8 @@ class LeaguesController < ApplicationController
       @league = League.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Only allow a trusted parameter "white list" through.
     def league_params
-      params.require(:league).permit(:name, :location, :description, :start_date, :end_date)
+      params.require(:league).permit(:name, :start_date, :end_date, :description, :user_id)
     end
 end

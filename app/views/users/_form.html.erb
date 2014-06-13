@@ -1,0 +1,54 @@
+
+
+
+<div class="col-sm-4 col-sm-offset-2" id="league_signup">
+
+  <%= form_for @user, class: 'form-horizontal' do |f| %>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+        <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <h1>Run Leagues</h1>
+    <div class="actions">
+      <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
+      <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
+      <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
+      <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
+      <%= f.hidden_field :user_type, class: 'form-control', value: "league_admin" %><br>
+      <center><%= f.submit "Sign Up", class: "btn btn-info"%></center>
+    </div>
+
+  <% end %>
+
+</div>
+
+<div class="col-sm-4" id="team_signup">
+
+  <%= form_for @user, class: 'form-horizontal'  do |f| %>
+
+    <h1 style="text-align:right">Run Teams</h1>
+    <div class="actions">
+      <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
+      <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
+      <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
+      <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
+      <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
+      <center><%= f.submit "Sign Up", class: "btn btn-info" %></center>
+    </div>
+
+  <% end %>
+</div>
+
+<div class="col-sm-2">
+  </div>
+

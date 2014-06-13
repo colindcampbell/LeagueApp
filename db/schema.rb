@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140612033556) do
+ActiveRecord::Schema.define(version: 20140613040410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20140612033556) do
   add_index "days", ["league_id"], name: "index_days_on_league_id", using: :btree
 
   create_table "games", force: true do |t|
-    t.string   "location"
     t.time     "time"
     t.string   "sport"
     t.integer  "home_score"
@@ -36,13 +35,27 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.boolean  "half"
     t.integer  "home_team_id"
     t.integer  "away_team_id"
-    t.boolean  "ot"
     t.integer  "day_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "location_id"
+    t.integer  "ot"
+  end
+
+  add_index "games", ["day_id"], name: "index_games_on_day_id", using: :btree
+  add_index "games", ["location_id"], name: "index_games_on_location_id", using: :btree
+
+  create_table "league_teams", force: true do |t|
+    t.integer  "team_id"
+    t.integer  "league_id"
+    t.boolean  "paid"
+    t.integer  "place"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "games", ["day_id"], name: "index_games_on_day_id", using: :btree
+  add_index "league_teams", ["league_id"], name: "index_league_teams_on_league_id", using: :btree
+  add_index "league_teams", ["team_id"], name: "index_league_teams_on_team_id", using: :btree
 
   create_table "leagues", force: true do |t|
     t.string   "name"
@@ -53,6 +66,7 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
   end
 
   add_index "leagues", ["user_id"], name: "index_leagues_on_user_id", using: :btree
@@ -87,7 +101,7 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assists"
-    t.integer  "rebounds"
+    t.integer  "defensive_rebounds"
     t.integer  "field_goals"
     t.integer  "fg_attempts"
     t.integer  "fouls"
@@ -102,6 +116,10 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.integer  "sacks"
     t.integer  "interceptions"
     t.integer  "fumbles"
+    t.integer  "steals"
+    t.integer  "freethrows_made"
+    t.integer  "freethrows_attempted"
+    t.integer  "offensive_rebounds"
   end
 
   add_index "stats", ["game_id"], name: "index_stats_on_game_id", using: :btree
@@ -112,16 +130,14 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.integer  "wins"
     t.integer  "losses"
     t.integer  "ties"
-    t.string   "coach_name"
-    t.string   "coach_email"
-    t.string   "coach_phone"
     t.string   "home_city"
-    t.integer  "league_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
+    t.string   "mascot"
   end
 
-  add_index "teams", ["league_id"], name: "index_teams_on_league_id", using: :btree
+  add_index "teams", ["user_id"], name: "index_teams_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"
@@ -130,6 +146,8 @@ ActiveRecord::Schema.define(version: 20140612033556) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
+    t.integer  "phone"
+    t.string   "user_type"
   end
 
 end
