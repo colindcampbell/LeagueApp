@@ -57,4 +57,10 @@ gem 'angularjs-rails'
 
 gem 'rails_12factor'
 
+gem 'angular-rails-templates'
+
+gem 'lodash-rails'
+
+
+
 

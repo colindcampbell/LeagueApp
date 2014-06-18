@@ -1,9 +1,16 @@
 LeagueApp::Application.routes.draw do
 
+  get "visitors/index"
+  get "team_leagues/index"
   resources :sessions
   resources :leagues
   resources :users
-  resources :teams
+  resources :teams do
+    resources :players
+  end
+  resources :league_teams
+  resources :team_leagues, only: :index
+  
 
   root 'users#new'
   # The priority is based upon order of creation: first created -> highest priority.

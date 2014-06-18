@@ -12,6 +12,7 @@
   <tbody>
     <% @teams.each do |team| %>
       <tr>
+        <td><h3><%=team.name%></h3></td>
         <td><%= link_to 'Show', team %></td>
         <td><%= link_to 'Edit', edit_team_path(team) %></td>
         <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -22,6 +23,52 @@
 
 <br>
 
+<br><br><br><br>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-sm-4">
+      <h3><%= @team.name %>'s Leagues</h3>
+      <% @team_leagues.each do |l| %>
+        <%= l.name %><br>
+        <%= l.start_date %><br>
+        <%= l.end_date %><br>
+        <%= l.description %><br>
+      <% end %>
+    </div>    
+
+    <div class="col-sm-4">
+      <h3>Join leagues</h3>
+      <% @leagues.each do |l| %>
+        <%= l.name %><br>
+        <%= l.start_date %><br>
+        <%= l.end_date %><br>
+        <%= l.description %><br>
+        <!-- Create a record in LeagueTeams with team:@team, league:l -->
+        <%= form_for @league_team do |f| %>
+          <%= f.hidden_field :league_id, value: l.id %>
+          <%= f.hidden_field :team_id, value: @team.id %>
+          <%= f.submit "Add", data: {confirm: "Are you sure you want to join #{l.name}? Once you join, only the league administrator can remove you."}%>
+        <% end %><br>
+      <% end %>
+    </div>
+
+
+
+
+
+
+  </div>
+  <div class="row">
+
+    <p id="notice"><%= notice %></p>
+
+    <%= link_to 'Edit', edit_team_path(@team) %> |
+    <%= link_to "Logout ", session_path(session), method: :delete %>
+  </div>
+
 <%= link_to 'New Team', new_team_path %><br>
 
 <%= link_to "Logout ", session_path(session), method: :delete %>
+

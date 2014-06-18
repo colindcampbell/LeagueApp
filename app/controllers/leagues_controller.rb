@@ -3,16 +3,17 @@ class LeaguesController < ApplicationController
   before_action :authenticate_user, only: :index
   respond_to :html, :json
 
+
+
   # GET /leagues
   def index
-    @leagues = current_user.leagues
+    @leagues = League.all
     respond_with @leagues
   end
 
   # GET /leagues/1
   def show
     @days = @league.days
-
   end
 
   # GET /leagues/new

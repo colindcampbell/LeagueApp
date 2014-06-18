@@ -1,4 +1,42 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
 
-<%= link_to 'Edit', edit_team_path(@team) %> |
-<%= link_to 'Back', teams_path %>
+  <ul class="nav nav-tabs">
+    <li>
+      <a ui-sref="leagues">View All Leagues</a>
+    </li> 
+    <li>
+      <a ui-sref="teams">View All Teams</a>
+    </li>
+    <li>
+      <a ui-sref="players">View All Players</a>
+    </li>
+  </ul>
+ 
+
+  <div>
+
+    <div ng-show="errors" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" ng-click="clearErrors();" aria-hidden="true">&times;</button>
+      <ul>
+        <li ng-repeat="(attribute, error) in errors">
+          {{attribute}} {{error.join(", ")}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content" x-ng-controller="TeamsCtrl" x-ng-init="setTeam(<%= @team.id %>);">
+      <div class="tab-pane active" id="home">
+        <div ui-view></div>
+      </div>
+    </div>
+
+  </div>
+
+
+	<div class="row">
+
+		<%= link_to 'Edit', edit_team_path(@team) %> |
+		<%= link_to "Logout ", session_path(session), method: :delete %>
+	</div>
+
+</div>

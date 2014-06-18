@@ -1,0 +1,58 @@
+<div class="container-fluid" x-ng-controller="TeamsCtrl">
+
+	<div class="row">
+		<div class="col-sm-6">			
+			<div x-ng-repeat="player in players">
+				<h5>{{player.last_name}}, {{player.first_name}} | #{{player.number}}</h5>
+				<div class="btn btn-danger" ng-click="deletePlayer(player);">Remove Player</div>
+				<div class="btn btn-warning" ng-click="editPlayer(player);">Edit Player</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			
+			<div ng-show="playerAdd">
+				<h3>New Player:</h3>
+			  <form ng-submit="savePlayer();" class="form-group">
+			    <label for="firstName">First Name:</label>
+			    <input ng-model="player.first_name" name="firstName" class="form-control">
+			    <label for="lastName">Last Name:</label>
+			    <input ng-model="player.last_name" name="lastName" class="form-control">
+			    <label for="number">Number:</label>
+			    <input ng-model="player.number" name="number" class="form-control">
+			    <label for="position">Position:</label>
+			    <input ng-model="player.position" name="position" class="form-control">
+			    <label for="height">Height:</label>
+			    <input ng-model="player.height" name="height" class="form-control">
+			    <label for="weight">Weight:</label>
+			    <input ng-model="player.weight" name="weight" class="form-control">
+			    <input type="submit" value="Add Player" class="btn btn-primary">
+			  </form>
+			</div>
+
+			<div ng-show="editing">
+				<h3>Edit Player:</h3>
+			  <form ng-submit="updatePlayer(player);" class="form-group">
+			    <label for="firstName">First Name:</label>
+			    <input ng-model="player.first_name" name="firstName" class="form-control">
+			    <label for="lastName">Last Name:</label>
+			    <input ng-model="player.last_name" name="lastName" class="form-control">
+			    <label for="number">Number:</label>
+			    <input ng-model="player.number" name="number" class="form-control">
+			    <label for="position">Position:</label>
+			    <input ng-model="player.position" name="position" class="form-control">
+			    <label for="height">Height:</label>
+			    <input ng-model="player.height" name="height" class="form-control">
+			    <label for="weight">Weight:</label>
+			    <input ng-model="player.weight" name="weight" class="form-control">
+			    <input type="submit" value="Save" class="btn btn-primary">
+			    <div class="btn btn-info" ng-click="newPlayer();">Add New Player</div>
+			  </form>
+
+			</div>
+
+		</div>
+
+	
+
+</div>

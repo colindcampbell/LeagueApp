@@ -10,7 +10,11 @@ class SessionsController < ApplicationController
       if @current_user.user_type == 'league_admin'
         redirect_to leagues_path
       else
-        redirect_to teams_path
+        if current_user.teams.count > 0
+          redirect_to current_user.teams.first
+        else
+          redirect_to new_team_path
+        end
       end
     else
       flash[:error] = "Invalid email/password combination"

@@ -1,7 +1,7 @@
 class Team < ActiveRecord::Base
   has_many :home_games, class_name: "Game", foreign_key: "home_team_id", inverse_of: :home_team
 	has_many :away_games, class_name: "Game", foreign_key: "away_team_id", inverse_of: :away_team
-	has_many :players
+	has_many :players, order: 'last_name'
 
 
 	validates_presence_of :name, message:' must be present for each team'
@@ -31,7 +31,7 @@ class Team < ActiveRecord::Base
 
   has_many :league_teams
   has_many :leagues, through: :league_teams
-  
+  belongs_to :user
 
 
 end

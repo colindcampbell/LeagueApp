@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   # GET /users/1
+  def index
+    respond_with User.all
+  end
+
   def show
     respond_with current_user
   end
@@ -13,9 +17,12 @@ class UsersController < ApplicationController
     if current_user && current_user.user_type == 'league_admin'
       redirect_to leagues_path
     elsif current_user && current_user.user_type == 'team_owner'
-      redirect_to teams_path
+      if current_user.teams.count > 0
+        redirect_to current_user.teams.first
+      else
+        redirect_to new_team_path
+      end
     end
-
     @user = User.new
   end
 
@@ -32,7 +39,7 @@ class UsersController < ApplicationController
       if @user.user_type == "league_admin"
         redirect_to leagues_path, notice: 'User was successfully created.'
       else
-        redirect_to teams_path, notice: 'User was successfully created.'
+        redirect_to new_team_path, notice: 'User was successfully created.'
       end
     else
       render action: 'new'
