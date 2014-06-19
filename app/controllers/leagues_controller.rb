@@ -4,7 +4,6 @@ class LeaguesController < ApplicationController
   respond_to :html, :json
 
 
-
   # GET /leagues
   def index
     @leagues = League.all
@@ -14,6 +13,7 @@ class LeaguesController < ApplicationController
   # GET /leagues/1
   def show
     @days = @league.days
+    respond_with @league
   end
 
   # GET /leagues/new

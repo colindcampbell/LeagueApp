@@ -3,10 +3,17 @@ LeagueApp::Application.routes.draw do
   get "visitors/index"
   get "team_leagues/index"
   resources :sessions
-  resources :leagues
+  resources :leagues do
+    resources :days
+    resources :games
+    resources :teams
+  end
   resources :users
+
   resources :teams do
-    resources :players
+    resources :players do
+      get 'teamPlayers', on: :collection
+    end
   end
   resources :league_teams
   resources :team_leagues, only: :index

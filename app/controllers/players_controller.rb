@@ -2,9 +2,14 @@ class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json
 
+  def allPlayers
+    @players = Player.all
+    respond_with @players
+  end
+
   # GET /players
   def index
-    @players = Player.all
+    @players = Player.where(team_id: current_user.teams.first.id).sort_by{|p| p.last_name}
     respond_with @players
   end
 

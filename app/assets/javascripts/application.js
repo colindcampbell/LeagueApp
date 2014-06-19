@@ -21,7 +21,7 @@
 //= require_tree .
 
 
-var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
+var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
     ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
@@ -70,18 +70,24 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
 
 
 
-leagueApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$location', function($scope, Restangular, $state, $location) {
+teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
   $scope.user = Restangular.one('users', 1).get().$object;
-  $scope.leagues = Restangular.all('leagues').getList().$object;
+  // $scope.leagues = Restangular.all('leagues').getList().$object;
   $scope.playerAdd = true;
   $scope.editing = false;
   $scope.teamID;
 
   $scope.setTeam = function(id) {
     $scope.teamID = id;
+    $scope.teamLeagues = [];
     Restangular.one('teams', id).get().then(function(team){
       $scope.team = team;
+      for(i=0;i<team.league_ids.length;i++){
+        Restangular.one('leagues', team.league_ids[i]).get().then(function(league){
+          $scope.teamLeagues.push(league);
+        });
+      }
     });
     Restangular.one('teams', id).all('players').getList().then(function(players){
       $scope.players = players;
@@ -131,6 +137,8 @@ leagueApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$location
   };
   
 }]);
+
+
 
 
 
