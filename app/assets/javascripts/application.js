@@ -57,6 +57,25 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
 
 leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
+  $scope.leagueID;
+
+  $scope.setLeague = function(id) {
+    console.log(id);
+    $scope.leagueID = id;
+    $scope.teamLeagues = [];
+    Restangular.one('leagues', id).get().then(function(league){
+      $scope.league = league;
+      for(i=0;i<league.team_ids.length;i++){
+        Restangular.one('teams', league.team_ids[i]).get().then(function(team){
+          $scope.teamLeagues.push(team);
+          console.log(team);
+        });
+      }
+    });
+    // Restangular.one('teams', id).all('players').getList().then(function(players){
+    //   $scope.players = players;
+    // });
+  };
 
 
 }]);
@@ -102,6 +121,7 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
 teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
   $scope.user = Restangular.one('users', 1).get().$object;
+  $scope.leagues = Restangular.all('leagues').getList().$object;
   $scope.playerAdd = true;
   $scope.editing = false;
   $scope.teamID;
@@ -162,6 +182,22 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($sc
     $scope.player = {};
     $scope.playerAdd = true;
     $scope.editing = false;
+  };
+
+  $scope.saveLeagueTeam = function(teamID, leagueID){
+    var newLeagueTeam = {team_id:teamID, league_id:leagueID};
+    Restangular.all('league_teams').post(newLeagueTeam).then(function(){
+      $scope.teamLeagues = {};
+      Restangular.one('teams', $scope.teamID).get().then(function(team){
+      $scope.team = team;
+      for(i=0;i<team.league_ids.length;i++){
+        Restangular.one('leagues', team.league_ids[i]).get().then(function(league){
+          $scope.teamLeagues.push(league);
+        });
+      }
+    });
+      $state.go('teams');
+    });
   };
   
 }]);

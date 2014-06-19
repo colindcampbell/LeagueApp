@@ -1,1 +1,18 @@
-Here is your league show
+
+<div class="row">
+
+	{{league.name}}
+
+	<div class="col-sm-4"><h4>( Schedule )</h4>
+
+	</div>	
+
+	<div class="col-sm-4"><h4>( Standings )</h4>
+		<div x-ng-repeat="team in teamLeagues">{{team.name}}</div>
+	</div>
+
+	<div class="col-sm-4"><h4>( Results )</h4>
+
+	</div>
+
+</div>

@@ -1,7 +1,5 @@
 LeagueApp::Application.routes.draw do
 
-  get "visitors/index"
-  get "team_leagues/index"
   resources :sessions
   resources :leagues do
     resources :days
@@ -15,7 +13,7 @@ LeagueApp::Application.routes.draw do
       get 'teamPlayers', on: :collection
     end
   end
-  resources :league_teams
+  resources :league_teams 
   resources :team_leagues, only: :index
   
 

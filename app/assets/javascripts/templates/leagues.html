@@ -3,8 +3,10 @@
 	<h1>Here are the Leagues</h1>
 
 	<div x-ng-repeat="league in leagues">
-		{{league.name}}
-		{{league.id}}
+		{{league.name}} | {{league.start_date}}<br>
+		<div class="btn btn-success" x-ng-click="saveLeagueTeam(team.id, league.id);">Join this league</div><br><br>
+		
+
 	</div>
 
 </div>
