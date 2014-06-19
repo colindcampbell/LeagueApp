@@ -1,7 +1,34 @@
+<div class="container-fluid"  x-ng-app="leagueapp">
+
+  <ul class="nav nav-tabs">
+    <li>
+      <a ui-sref="Your League">View Your League</a>
+    </li>
+  </ul>
+ 
+
+  <div>
+
+    <div ng-show="errors" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" ng-click="clearErrors();" aria-hidden="true">&times;</button>
+      <ul>
+        <li ng-repeat="(attribute, error) in errors">
+          {{attribute}} {{error.join(", ")}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="tab-content" x-ng-controller="LeagueCtrl" x-ng-init="setTeam(<%= @league.id %>);">
+      <div class="tab-pane active" id="home">
+        <div ui-view></div>
+      </div>
+    </div>
+
+  </div>
 
 
+	<div class="row">
+		<%= link_to "Logout ", session_path(session), method: :delete %>
+	</div>
 
-<%= @league.name %>
-
-<%= link_to 'Edit', edit_league_path(@league) %> |
-<%= link_to 'Back', leagues_path %>
+</div>

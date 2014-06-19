@@ -21,30 +21,63 @@
 //= require_tree .
 
 
-var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
+var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
     ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
-
     defaults.common["X-CSRF-TOKEN"] = authToken;
     defaults.patch = defaults.patch || {};
     defaults.patch['Content-Type'] = 'application/json';
     defaults.common['Accept'] = 'application/json';
-    
 }]).config(function($stateProvider, $urlRouterProvider) {
-  //
+  // For any unmatched url, redirect to /teams
+  $urlRouterProvider.otherwise("/league");
+  // Now set up the states
+  $stateProvider
+    .state('league', {
+      url: "/league",
+      templateUrl: "userLeague.html"
+    });
+    // .state('teams', {
+    //   url: "/teams",
+    //   templateUrl: "teams.html"
+    // })
+    // .state('players', {
+    //   url: "/players",
+    //   templateUrl: "players.html"
+    // })
+    // .state('new-player', {
+    //   url: "/new-player",
+    //   templateUrl: "player_form.html"
+    // });
+    // RestangularProvider.setBaseUrl('localhost:3000/');
+    // RestangularProvider.setRequestSuffix('.json');
+  });
+
+
+leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
+
+
+
+}]);
+
+
+
+
+
+var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
+    ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
+    var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
+    var defaults = $httpProvider.defaults.headers;
+    defaults.common["X-CSRF-TOKEN"] = authToken;
+    defaults.patch = defaults.patch || {};
+    defaults.patch['Content-Type'] = 'application/json';
+    defaults.common['Accept'] = 'application/json';
+}]).config(function($stateProvider, $urlRouterProvider) {
   // For any unmatched url, redirect to /teams
   $urlRouterProvider.otherwise("/teams");
   // Now set up the states
   $stateProvider
-    // .state('home', {
-    //   url: "/home",
-    //   templateUrl: "home.html"
-    // })
-    // .state('newTeam', {
-    //   url: "/newTeam",
-    //   templateUrl: "team_form.html"
-    // })
     .state('leagues', {
       url: "/leagues",
       templateUrl: "leagues.html"
@@ -63,17 +96,12 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
     });
     // RestangularProvider.setBaseUrl('localhost:3000/');
     // RestangularProvider.setRequestSuffix('.json');
-    
-
   });
-
-
 
 
 teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
   $scope.user = Restangular.one('users', 1).get().$object;
-  // $scope.leagues = Restangular.all('leagues').getList().$object;
   $scope.playerAdd = true;
   $scope.editing = false;
   $scope.teamID;
