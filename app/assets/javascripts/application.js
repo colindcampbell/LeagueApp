@@ -60,21 +60,47 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
   $scope.leagueID;
 
   $scope.setLeague = function(id) {
-    console.log(id);
     $scope.leagueID = id;
-    $scope.teamLeagues = [];
+    $scope.leagueTeams = [];
+    $scope.leagueDays = [];
+    //active model serializer embeds IDs of teams, so I have to loop through the array of IDs to save all of the teams that belong to a league
     Restangular.one('leagues', id).get().then(function(league){
       $scope.league = league;
+      //get teams that belong to this league
       for(i=0;i<league.team_ids.length;i++){
-        Restangular.one('teams', league.team_ids[i]).get().then(function(team){
-          $scope.teamLeagues.push(team);
-          console.log(team);
+        league.one('teams', league.team_ids[i]).get().then(function(team){
+          $scope.leagueTeams.push(team);
+        });
+      }
+      //get days that belong to this league
+      for(i=0;i<league.day_ids.length;i++){
+        league.one('days', league.day_ids[i]).get().then(function(day){
+          console.log(day);
+          $scope.leagueDays.push(day);
         });
       }
     });
-    // Restangular.one('teams', id).all('players').getList().then(function(players){
-    //   $scope.players = players;
-    // });
+
+  };
+
+
+
+  $scope.deleteLeagueTeam = function(team){
+    // get all league_teams
+    Restangular.all('league_teams').getList().then(function(leagueTeams){
+      //loop through the league_teams
+      for(i=0;i<leagueTeams.length;i++){
+        var leagueTeam = leagueTeams[i];
+        //if the team and league id match, delete that league_team record
+        if((leagueTeam.team_id == team.id) && (leagueTeam.league_id == $scope.leagueID)){
+          leagueTeam.remove().then(function(){
+            //remove the team from the scope
+            $scope.leagueTeams= _.without($scope.leagueTeams, team);
+            return;
+          });
+        }
+      }
+    });
   };
 
 
@@ -168,7 +194,6 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($sc
   };
 
   $scope.updatePlayer = function(player){
-    console.log(player);
     player.put().then(function(){
       $scope.player = {};
       $scope.playerAdd = true;
@@ -184,18 +209,10 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($sc
     $scope.editing = false;
   };
 
-  $scope.saveLeagueTeam = function(teamID, leagueID){
-    var newLeagueTeam = {team_id:teamID, league_id:leagueID};
+  $scope.saveLeagueTeam = function(teamID, league){
+    var newLeagueTeam = {team_id:teamID, league_id:league.id};
     Restangular.all('league_teams').post(newLeagueTeam).then(function(){
-      $scope.teamLeagues = {};
-      Restangular.one('teams', $scope.teamID).get().then(function(team){
-      $scope.team = team;
-      for(i=0;i<team.league_ids.length;i++){
-        Restangular.one('leagues', team.league_ids[i]).get().then(function(league){
-          $scope.teamLeagues.push(league);
-        });
-      }
-    });
+      $scope.teamLeagues.push(league);
       $state.go('teams');
     });
   };

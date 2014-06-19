@@ -43,7 +43,10 @@ class LeagueTeamsController < ApplicationController
   # DELETE /league_teams/1
   def destroy
     @league_team.destroy
-    redirect_to league_teams_url, notice: 'League team was successfully destroyed.'
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'Team was successfully removed.'}
+      format.json { render json: { head: :ok } }
+    end
   end
 
   private

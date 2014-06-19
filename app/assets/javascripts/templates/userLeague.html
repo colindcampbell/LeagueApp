@@ -4,15 +4,22 @@
 	{{league.name}}
 
 	<div class="col-sm-4"><h4>( Schedule )</h4>
+		
+		<div x-ng-repeat="day in leagueDays">{{day.date}}</div>
 
 	</div>	
 
 	<div class="col-sm-4"><h4>( Standings )</h4>
-		<div x-ng-repeat="team in teamLeagues">{{team.name}}</div>
+		<div x-ng-repeat="team in leagueTeams">{{team.name}}<br>
+			<div class="btn btn-danger" x-ng-click="deleteLeagueTeam(team, league.id);">Remove this team</div>
+		</div>
+
+
 	</div>
 
 	<div class="col-sm-4"><h4>( Results )</h4>
 
 	</div>
+
 
 </div>
