@@ -5,12 +5,33 @@
 
 	<div class="col-sm-4"><h4>( Schedule )</h4>
 		
-		<div x-ng-repeat="day in leagueDays">{{day.date}}</div>
+		<div x-ng-repeat="day in leagueDays" x-ng-if="day.date >= Day();">
+			{{day.date}}<br>
+			<div x-ng-repeat="game in leagueGames" x-ng-if="game.day_id == day.id">
+
+				<div x-ng-repeat="team in leagueTeams" x-ng-if="game.home_team_id == team.id">
+					Home Team: {{team.name}}
+				</div>
+
+				<div x-ng-repeat="team in leagueTeams" x-ng-if="game.away_team_id == team.id">
+					Away Team: {{team.name}}
+				</div>
+				
+				<div>{{game.home_score}} | {{game.away_score}}</div>
+				<br>
+			</div>
+		</div>
+
+		  <form ng-submit="saveDay(league);" class="form-group">
+		    <label for="date">Add a Day:</label>
+		    <input ng-model="day.date" name="date" class="form-control" type="date">
+		    <input type="submit" value="Add Day" class="btn btn-primary">
+		  </form>
 
 	</div>	
 
 	<div class="col-sm-4"><h4>( Standings )</h4>
-		<div x-ng-repeat="team in leagueTeams">{{team.name}}<br>
+		<div x-ng-repeat="team in leagueTeams">{{team.name}} ( {{team.wins}} - {{team.losses}} )<br>
 			<div class="btn btn-danger" x-ng-click="deleteLeagueTeam(team, league.id);">Remove this team</div>
 		</div>
 

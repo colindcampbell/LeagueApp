@@ -21,7 +21,7 @@
 //= require_tree .
 
 
-var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
+var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templates', 'restangular', 'ui.bootstrap']).config(
     ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
@@ -58,36 +58,60 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
 leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
   $scope.leagueID;
+  $scope.day = {};
+  $scope.leagueTeams = [];
+  $scope.leagueDays = [];
+  $scope.leagueGames = [];
 
   $scope.setLeague = function(id) {
     $scope.leagueID = id;
-    $scope.leagueTeams = [];
-    $scope.leagueDays = [];
+    $scope.setDays(id);
+    $scope.setGames(id);
     //active model serializer embeds IDs of teams, so I have to loop through the array of IDs to save all of the teams that belong to a league
     Restangular.one('leagues', id).get().then(function(league){
       $scope.league = league;
       //get teams that belong to this league
       for(i=0;i<league.team_ids.length;i++){
-        league.one('teams', league.team_ids[i]).get().then(function(team){
-          $scope.leagueTeams.push(team);
-        });
-      }
-      //get days that belong to this league
-      for(i=0;i<league.day_ids.length;i++){
-        league.one('days', league.day_ids[i]).get().then(function(day){
-          console.log(day);
-          $scope.leagueDays.push(day);
-        });
+        $scope.leagueTeams.push(league.one('teams', league.team_ids[i]).get().$object);
       }
     });
-
   };
 
+  $scope.setDays = function(id) {
+    $scope.leagueDays = [];
+    //get days that belong to this league
+    Restangular.one('leagues', id).get().then(function(league){
+      //get teams that belong to this league
+      for(i=0;i<league.day_ids.length;i++){
+        $scope.leagueDays.push(league.one('days', league.day_ids[i]).get().$object);
+      }
+    });
+  };
 
+  $scope.setGames = function(id) {
+    $scope.leagueGames = [];
+    //get days that belong to this league
+    Restangular.one('leagues', id).get().then(function(league){
+      //get teams that belong to this league
+      for(i=0;i<league.game_ids.length;i++){
+        $scope.leagueGames.push(league.one('games', league.game_ids[i]).get().$object);
+      }
+    });
+  };
+
+  $scope.saveDay = function(league) {
+    $scope.day.league_id = league.id;
+    $scope.league.post('days', $scope.day).then(function() {
+      $scope.setDays($scope.leagueID);
+      $scope.day = {};
+    }, function(errors) {
+        $scope.errors = errors.data;
+      });
+  };
 
   $scope.deleteLeagueTeam = function(team){
     // get all league_teams
-    Restangular.all('league_teams').getList().then(function(leagueTeams){
+    Restangular.all('league_teams').getList().$object.then(function(leagueTeams){
       //loop through the league_teams
       for(i=0;i<leagueTeams.length;i++){
         var leagueTeam = leagueTeams[i];
@@ -110,7 +134,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
 
 
 
-var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular']).config(
+var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular', 'ui.bootstrap']).config(
     ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
@@ -146,7 +170,7 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
 
 teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', function($scope, Restangular, $state) {
 
-  $scope.user = Restangular.one('users', 1).get().$object;
+  $scope.user = Restangular.one('users').get().$object;
   $scope.leagues = Restangular.all('leagues').getList().$object;
   $scope.playerAdd = true;
   $scope.editing = false;

@@ -4,7 +4,7 @@ class DaysController < ApplicationController
   
   # GET /days
   def index
-    @days = Day.all
+    @days = Day.all.sort_by{|dt| dt.date}
     respond_with @days
   end
 
@@ -27,7 +27,7 @@ class DaysController < ApplicationController
     @day = Day.new(day_params)
 
     if @day.save
-      redirect_to @day, notice: 'Day was successfully created.'
+      redirect_to root_path, notice: 'Day was successfully created.'
     else
       render action: 'new'
     end
@@ -56,6 +56,6 @@ class DaysController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def day_params
-      params.require(:day).permit(:date)
+      params.require(:day).permit(:date, :league_id)
     end
 end

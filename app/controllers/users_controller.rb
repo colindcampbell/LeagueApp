@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def index
-    respond_with User.all
+    respond_with current_user
   end
 
   def show

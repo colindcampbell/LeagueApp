@@ -7,7 +7,7 @@ LeagueApp::Application.routes.draw do
     resources :teams
   end
   resources :users
-
+  
   resources :teams do
     resources :players do
       get 'teamPlayers', on: :collection
