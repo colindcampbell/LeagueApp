@@ -4,7 +4,7 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = Game.all
+    @games = current_user.games
     respond_with @games
   end
 
@@ -35,17 +35,26 @@ class GamesController < ApplicationController
 
   # PATCH/PUT /games/1
   def update
-    if @game.update(game_params)
-      redirect_to @game, notice: 'Game was successfully updated.'
+    if @game.update(player_params)
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.json { render nothing: true, status: :no_content }
+      end
     else
-      render action: 'edit'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # DELETE /games/1
   def destroy
     @game.destroy
-    redirect_to games_url, notice: 'Game was successfully destroyed.'
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'Game was successfully destroyed.'}
+      format.json { render json: { head: :ok } }
+    end
   end
 
   private
@@ -56,6 +65,6 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params[:game]
+      params.require(:game).permit(:day_id, :home_team_id, :home_score, :away_team_id, :away_score, :time, :final, :half )
     end
 end

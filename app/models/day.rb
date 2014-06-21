@@ -10,13 +10,13 @@ class Day < ActiveRecord::Base
   end
 
   validates_presence_of :date, message: " must be present"
-  # validate :unique_date
+  validate :unique_date
 
-  # def unique_date
-  # 	existing_day = self.league.days.where(date: self.date).first
-  # 	if existing_day
-  # 		errors.add(:date, '( This date exists, please select another day )')
-  # 	end
-  # end
+  def unique_date
+  	existing_day = self.league.days.where(date: self.date).first
+  	if existing_day
+  		errors.add(:date, '( This date exists, please select another day )')
+  	end
+  end
 
 end

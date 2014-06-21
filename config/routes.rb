@@ -1,17 +1,15 @@
 LeagueApp::Application.routes.draw do
 
   resources :sessions
-  resources :leagues do
-    resources :days
-    resources :games
-    resources :teams
-  end
+  resources :leagues
+  resources :days
+  resources :games
+  resources :teams
   resources :users
-  
-  resources :teams do
-    resources :players do
-      get 'teamPlayers', on: :collection
-    end
+
+  resources :teams
+  resources :players do
+    get 'teamPlayers', on: :collection
   end
   resources :league_teams 
   resources :team_leagues, only: :index

@@ -23,7 +23,6 @@ class LeagueTeamsController < ApplicationController
   # POST /league_teams
   def create
     @league_team = LeagueTeam.new(league_team_params)
-
     if @league_team.save
       redirect_to leagues_path, notice: 'You have joined a new league.'
     else

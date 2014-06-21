@@ -9,4 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :leagues
   has_many :teams
+  has_many :players, through: :teams
+  has_many :days, through: :leagues
+  has_many :games, through: :days
 end

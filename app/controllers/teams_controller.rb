@@ -7,7 +7,7 @@ class TeamsController < ApplicationController
   
   # GET /teams
   def index
-    @teams = Team.all
+    @teams = current_user.teams
     respond_with @teams
   end
 

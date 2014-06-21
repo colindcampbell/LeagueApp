@@ -6,7 +6,7 @@ class LeaguesController < ApplicationController
 
   # GET /leagues
   def index
-    @leagues = League.all
+    @leagues = current_user.leagues
     respond_with @leagues
   end
 

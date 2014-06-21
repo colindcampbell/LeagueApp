@@ -4,7 +4,7 @@ class DaysController < ApplicationController
   
   # GET /days
   def index
-    @days = Day.all.sort_by{|dt| dt.date}
+    @days = current_user.days.sort_by{|dt| dt.date}
     respond_with @days
   end
 
@@ -36,16 +36,25 @@ class DaysController < ApplicationController
   # PATCH/PUT /days/1
   def update
     if @day.update(day_params)
-      redirect_to @day, notice: 'Day was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.json { render nothing: true, status: :no_content }
+      end
     else
-      render action: 'edit'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @day.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # DELETE /days/1
   def destroy
     @day.destroy
-    redirect_to days_url, notice: 'Day was successfully destroyed.'
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: 'Player was successfully destroyed.'}
+      format.json { render json: { head: :ok } }
+    end
   end
 
   private
