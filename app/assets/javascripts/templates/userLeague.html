@@ -1,14 +1,12 @@
-
+<center>
 <div class="row">
 
-	{{league.name}}
-
-	<div class="col-sm-4"><h4>( Schedule )</h4>
-		<accordion close-others="oneAtATime" >
+	<div class="col-sm-6"><h2>( Schedule )</h2>
+		<accordion close-others="true" >
 			<!-- month[1] is the year in the date -->
 			<accordion-group heading="{{month[0].name}} {{month[1]}}" x-ng-repeat="month in leagueMonths"x-ng-if="month[0].number >= currentMonth">
-				<accordion close-others="oneAtATime">
-					<accordion-group heading="{{day.date | date:'fullDate'}}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && 
+				<accordion close-others="true">
+					<accordion-group heading="{{day.date | date:'EEEE, MMM dd'}}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && 
 					month[1] == day.date.split('-')[0] &&
 					dayInt(day.date) >= dateToday">
 						<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">
@@ -60,7 +58,8 @@
 			</accordion-group>
 		</accordion>
 
-		<center><button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Add a Day</button></center>
+
+		<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Add a Day</button>
 	  <form ng-submit="saveDay(league);" class="form-group" collapse="!isCollapsed">
 			<div class="well well-lg">
 		    <div style="display:inline-block; min-height:290px;">
@@ -70,23 +69,14 @@
 	    </div>
 	  </form>
 
-	</div>	
-
-
-	<div class="col-sm-4" x-ng-init="buildMonths(league)"><h4>( Standings )</h4>
-		<div x-ng-repeat="team in league.teams">{{team.name}} ( {{team.wins}} - {{team.losses}} )<br>
-			<div class="btn btn-danger" x-ng-click="deleteLeagueTeam(team, league.id);">Remove this team</div>
-		</div>
-
 	</div>
 
 
-	<div class="col-sm-4"><h4>( Results )</h4>
-		<accordion close-others="oneAtATime" >
+	<div class="col-sm-6"><h2>( Results )</h2>
+		<accordion close-others="true" >
 			<accordion-group heading="{{month[0].name}} {{month[1]}}" x-ng-repeat="month in leagueMonths" x-ng-if="month[0].number <= currentMonth">
-				<accordion close-others="oneAtATime">
-					<accordion-group heading="{{day.date | date:'fullDate' }}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && month[1] == day.date.split('-')[0] && dateToday > dayInt(day.date)">
-					{{dayInt(day.date);}} | {{dateToday}}
+				<accordion close-others="true">
+					<accordion-group heading="{{day.date | date:'EEEE, MMM dd' }}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && month[1] == day.date.split('-')[0] && dateToday > dayInt(day.date)">
 						<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">
 							<div x-ng-repeat="team in league.teams" x-ng-if="game.home_team_id == team.id">
 								Home Team: {{team.name}}
@@ -98,40 +88,6 @@
 							<div>{{game.time | date:'shortTime'}}</div><br>
 							<div class="btn btn-warning" ng-click="editGame(game);">Update Game</div>
 						</div>
-
-						<div>
-							<!-- Form for a new Game -->
-						  <form ng-submit="saveGame(day.id, $index);" class="form-group" x-ng-show="gameAdd">
-						    <h4>New Game:</h4>
-						    <label for="homeTeam">Home Team:</label>
-								<select ng-model="game.home_team_id" name="homeTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
-			            <option value="">-- choose home team --</option>
-			          </select><br>
-			          <label for="awayTeam">Away Team:</label>
-								<select ng-model="game.away_team_id" name="awayTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
-			            <option value="">-- choose away team --</option>
-			          </select>
-			          <timepicker ng-model="game.time" show-meridian="true"></timepicker>
-						    <input type="submit" value="Add Game" class="btn btn-primary">
-						  </form>
-						  <!-- End Form -->
-						  <!-- Form for a edit Game -->
-						  <form ng-submit="updateGame(game);" class="form-group" x-ng-show="!gameAdd">
-						    <h4>Edit Game:</h4>
-						    <label for="homeTeam">Home Team:</label>
-								<select ng-model="game.home_team_id" name="homeTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
-			            <option value="">-- choose home team --</option>
-			          </select><br>
-			          <label for="awayTeam">Away Team:</label>
-								<select ng-model="game.away_team_id" name="awayTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
-			            <option value="">-- choose away team --</option>
-			          </select>
-			          <timepicker ng-model="game.time" show-meridian="true"></timepicker>
-						    <input type="submit" value="Save Changes" class="btn btn-primary">
-						  </form>
-						  <!-- End Form -->
-						</div>
-
 						<div class="btn btn-danger" x-ng-click="deleteDay(day)">Remove Day</div>
 					</accordion-group>
 				</accordion>
@@ -141,3 +97,4 @@
 
 
 </div>
+</center>

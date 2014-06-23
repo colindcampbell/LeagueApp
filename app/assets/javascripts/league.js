@@ -14,11 +14,11 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
     .state('league', {
       url: "/league",
       templateUrl: "userLeague.html"
+    })
+    .state('standings', {
+      url: "/standings",
+      templateUrl: "standings.html"
     });
-    // .state('teams', {
-    //   url: "/teams",
-    //   templateUrl: "teams.html"
-    // })
     // .state('players', {
     //   url: "/players",
     //   templateUrl: "players.html"
