@@ -42,7 +42,8 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
   $scope.leagueMonths = [];
   $scope.leagueYears = [];
   $scope.leagueGames = [];
-  $scope.formShow = false;
+  $scope.currentMonth = null;
+  $scope.gameAdd = true;
   var months = [
     {number:1, name:"January"},
     {number:2, name:"February"},
@@ -59,10 +60,19 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
   ];
 
   $scope.today = function() {
-    $scope.day.date = new Date();
-    $scope.dateToday = new Date();
+    var today = new Date();
+    var day = (today.getDate()).toString();
+    var month = (today.getMonth()+1).toString();
+    var year = (today.getFullYear()).toString();
+    $scope.currentMonth = month;
+    $scope.dateToday = parseInt(year+('0' + month).slice(-2)+('0' + day).slice(-2));
+    $scope.day.date = today;
   };
   $scope.today();
+
+  $scope.dayInt = function(date) {
+    return parseInt(date.split('-')[0] + date.split('-')[1] + date.split('-')[2]);
+  };
 
   $scope.setLeague = function(id) {
     $scope.leagueID = id;
@@ -100,14 +110,25 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
   };
 
   $scope.saveDay = function(league) {
-    $scope.day.league_id = league.id;
-    Restangular.all('days').post($scope.day).then(function() {
-      console.log($scope.day);
-      $scope.league.days.push($scope.day);
+    var currentDay = $scope.day;
+    currentDay.league_id = league.id;
+    var day = (currentDay.date.getDate()).toString();
+    var month = (currentDay.date.getMonth()+1).toString();
+    var year = (currentDay.date.getFullYear()).toString();
+    currentDay.date = year+'-'+('0' + month).slice(-2)+'-'+('0' + day).slice(-2);
+    Restangular.all('days').post(currentDay).then(function() {
+      $scope.league.days.push(currentDay);
       $scope.today();
     }, function(errors) {
         $scope.errors = errors.data;
       });
+  };
+
+  $scope.deleteDay = function(day) {
+    Restangular.restangularizeElement(null, day, 'days');
+    day.remove().then(function() {
+      $scope.league.days = _.without($scope.league.days, day);
+    });
   };
 
   $scope.saveGame = function(dayID, dayIndex) {
@@ -118,6 +139,21 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
       $scope.league.days[dayIndex].games.push($scope.game);
       $scope.game = {};
     });
+  };
+
+  $scope.editGame = function(game) {
+    $scope.gameAdd = false;
+    $scope.game = game;
+  };
+
+  $scope.updateGame = function(game){
+    Restangular.restangularizeElement(null, game, 'games');
+    game.put().then(function(){
+      $scope.game = {};
+      $scope.playerAdd = true;
+    }, function(errors) {
+        $scope.errors = errors.data;
+      });
   };
 
   $scope.deleteLeagueTeam = function(team){
@@ -137,28 +173,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
       }
     });
   };
-
-// $scope.setDays = function(id) {
-  //   $scope.leagueDays = [];
-  //   //get days that belong to this league
-  //   Restangular.one('leagues', id).get().then(function(league){
-  //     //get teams that belong to this league
-  //     for(i=0;i<league.day_ids.length;i++){
-  //       $scope.leagueDays.push(league.one('days', league.day_ids[i]).get().$object);
-  //     }
-  //   });
-  // };
-
-  // $scope.setGames = function(id) {
-  //   $scope.leagueGames = [];
-  //   //get days that belong to this league
-  //   Restangular.one('leagues', id).get().then(function(league){
-  //     //get teams that belong to this league
-  //     for(i=0;i<league.game_ids.length;i++){
-  //       $scope.leagueGames.push(league.one('games', league.game_ids[i]).get().$object);
-  //     }
-  //   });
-  // };
 
 }]);
 

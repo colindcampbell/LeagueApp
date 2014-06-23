@@ -2,7 +2,7 @@
 
 	<div class="row">
 		<div class="col-sm-6">			
-			<div x-ng-repeat="player in players">
+			<div x-ng-repeat="player in team.players">
 				<h5>{{player.last_name}}, {{player.first_name}} | #{{player.number}}</h5>
 				<div class="btn btn-danger" ng-click="deletePlayer(player);">Remove Player</div>
 				<div class="btn btn-warning" ng-click="editPlayer(player);">Edit Player</div>
@@ -30,7 +30,7 @@
 			  </form>
 			</div>
 
-			<div ng-show="editing">
+			<div ng-show="!playerAdd">
 				<h3>Edit Player:</h3>
 			  <form ng-submit="updatePlayer(player);" class="form-group">
 			    <label for="firstName">First Name:</label>

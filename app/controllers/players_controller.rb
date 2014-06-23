@@ -9,7 +9,7 @@ class PlayersController < ApplicationController
 
   # GET /players
   def index
-    @players = current_user.players.sort_by{|p| p.last_name}
+    @players = Player.all.sort_by{|p| p.last_name}
     respond_with @players
   end
 

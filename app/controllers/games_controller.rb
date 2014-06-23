@@ -4,7 +4,7 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = current_user.games
+    @games = Game.all
     respond_with @games
   end
 
@@ -35,7 +35,7 @@ class GamesController < ApplicationController
 
   # PATCH/PUT /games/1
   def update
-    if @game.update(player_params)
+    if @game.update(game_params)
       respond_to do |format|
         format.html { redirect_to root_path }
         format.json { render nothing: true, status: :no_content }
