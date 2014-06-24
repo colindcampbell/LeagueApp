@@ -101,11 +101,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', function(
           }
         }
       }
-      // }
-      // get teams that belong to this league
-      // for(i=0;i<league.team_ids.length;i++){
-      //   $scope.leagueTeams.push(league.one('teams', league.team_ids[i]).get().$object);
-      // }
     });
   };
 

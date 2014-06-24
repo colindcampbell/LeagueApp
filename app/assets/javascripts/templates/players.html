@@ -3,10 +3,18 @@
 	<div class="row">
 		<div class="col-sm-6">			
 			<div x-ng-repeat="player in team.players">
-				<h5>{{player.last_name}}, {{player.first_name}} | #{{player.number}}</h5>
-				<div class="btn btn-danger" ng-click="deletePlayer(player);">Remove Player</div>
-				<div class="btn btn-warning" ng-click="editPlayer(player);">Edit Player</div>
+				<button class="btn btn-default btn-block" ng-click="isCollapsed = !isCollapsed">{{player.last_name}}, {{player.first_name}} | #{{player.number}}</button>
+				<div collapse="!isCollapsed">
+					<div class="well well-lg">
+						Position: {{player.position}} <br>
+						Height: {{player.height}} <br>
+						Weight: {{player.weight}} <br>
+						<div class="btn btn-danger" ng-click="deletePlayer(player);">Remove Player</div>
+						<div class="btn btn-warning" ng-click="editPlayer(player);">Edit Player</div>
+					</div> 
+				</div>
 			</div>
+			<div class="btn btn-primary" ng-click="newPlayer(team.players)">New Player</div>
 		</div>
 
 		<div class="col-sm-6">
