@@ -25,7 +25,6 @@ class DaysController < ApplicationController
   # POST /days
   def create
     @day = Day.new(day_params)
-
     if @day.save
       redirect_to root_path, notice: 'Day was successfully created.'
     else

@@ -1,0 +1,15 @@
+
+	  <form ng-submit="saveGame(day.id, $index);" class="form-group" x-ng-show="gameAdd">
+	    <h4>New Game:</h4>
+	    <label for="homeTeam">Home Team:</label>
+			<select ng-model="game.home_team_id" name="homeTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
+        <option value="">-- choose home team --</option>
+      </select><br>
+      <label for="awayTeam">Away Team:</label>
+			<select ng-model="game.away_team_id" name="awayTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
+        <option value="">-- choose away team --</option>
+      </select>
+      <timepicker ng-model="game.time" show-meridian="true"></timepicker>
+	    <input type="submit" value="Add Game" class="btn btn-primary">
+	  </form>
+					  

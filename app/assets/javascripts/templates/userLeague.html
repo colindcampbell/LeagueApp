@@ -2,9 +2,12 @@
 <div class="row">
 
 	<div class="col-sm-6"><h2>( Schedule )</h2>
-		<accordion close-others="true" >
+		<accordion close-others="true">
 			<!-- month[1] is the year in the date -->
-			<accordion-group heading="{{month[0].name}} {{month[1]}}" x-ng-repeat="month in leagueMonths"x-ng-if="month[0].number >= currentMonth">
+			<accordion-group x-ng-repeat="month in leagueMonths" x-ng-if="month[0].number >= currentMonth">
+				<accordion-heading>
+					<h3 style="margin: 0 auto 0 auto;">{{month[0].name}} <small>{{month[1]}}</small></h3>
+				</accordion-heading>
 				<accordion close-others="true">
 					<accordion-group heading="{{day.date | date:'EEEE, MMM dd'}}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && 
 					month[1] == day.date.split('-')[0] &&
@@ -58,23 +61,17 @@
 			</accordion-group>
 		</accordion>
 
-
-		<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Add a Day</button>
-	  <form ng-submit="saveDay(league);" class="form-group" collapse="!isCollapsed">
-			<div class="well well-lg">
-		    <div style="display:inline-block; min-height:290px;">
-	        <datepicker datepicker-mode="date" ng-model="day.date" min-date="league.start_date" max-date="league.end_date" show-weeks="true" class="well well-sm"></datepicker>
-	        <input type="submit" value="Add Day" class="btn btn-primary btn-small">
-		    </div>
-	    </div>
-	  </form>
-
+		
+		<center><button class="btn btn-default" ng-click="newDay(league);">Add a Day</button></center>
 	</div>
 
 
 	<div class="col-sm-6"><h2>( Results )</h2>
 		<accordion close-others="true" >
-			<accordion-group heading="{{month[0].name}} {{month[1]}}" x-ng-repeat="month in leagueMonths" x-ng-if="month[0].number <= currentMonth">
+			<accordion-group x-ng-repeat="month in leagueMonths" x-ng-if="month[0].number <= currentMonth">
+				<accordion-heading>
+					<h3 style="margin: 0 auto 0 auto;">{{month[0].name}} <small>{{month[1]}}</small></h3>
+				</accordion-heading>
 				<accordion close-others="true">
 					<accordion-group heading="{{day.date | date:'EEEE, MMM dd' }}" x-ng-repeat="day in league.days"	x-ng-if="month[0].number == day.date.split('-')[1] && month[1] == day.date.split('-')[0] && dateToday > dayInt(day.date)">
 						<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">

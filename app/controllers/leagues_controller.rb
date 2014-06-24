@@ -31,6 +31,9 @@ class LeaguesController < ApplicationController
     @league.user = current_user
 
     if @league.save
+      @first = @league.start_date
+      @last = @league.end_date
+      create_days(@league, @first, @last)
       redirect_to leagues_path, notice: 'League was successfully created.'
     else
       render action: 'new'

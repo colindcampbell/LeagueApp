@@ -23,10 +23,6 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
     .state('players', {
       url: "/players",
       templateUrl: "players.html"
-    })
-    .state('new-player', {
-      url: "/new-player",
-      templateUrl: "player_form.html"
     });
     // RestangularProvider.setBaseUrl('localhost:3000/');
     // RestangularProvider.setRequestSuffix('.json');
@@ -38,7 +34,7 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
   $scope.user = Restangular.one('users').get().$object;
   $scope.leagues = Restangular.all('leagues').getList().$object;
   $scope.playerAdd = true;
-  $scope.teamID;
+  $scope.teamID = null;
 
   $scope.setTeam = function(id) {
     $scope.teamID = id;
@@ -77,7 +73,7 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
       Restangular.all('players').post($scope.player).then(function(team) {
         //pushing the last element of the response (the newest player) onto the scope. I had to sort by ID first because they are returned sorted by last name
         var playersSorted = team.players.sort(function(a,b){return a.id - b.id});
-        players.push(playersSorted[team.players.length-1]);
+        players.push(playersSorted[playersSorted.length-1]);
         $scope.player = {};
         $modalInstance.dismiss('cancel');
       }, function(errors) {
