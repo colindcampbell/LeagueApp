@@ -4,11 +4,11 @@
 		<div class="col-sm-4">
 			<center>
 				<h2>( Players )</h2>			
-				<div x-ng-repeat="player in team.players">
-					<button class="btn btn-info btn-block" ng-click="isCollapsed = !isCollapsed">
+				<div x-ng-repeat="player in team.players | orderBy:'last_name'">
+					<button class="btn btn-default btn-block" ng-click="isCollapsed = !isCollapsed">
 						<h5>{{player.last_name}}, {{player.first_name}} <i>#{{player.number}}</i></h5>
 					</button>
-					<div collapse="!isCollapsed">
+					<div collapse="!isCollapsed" style="color:white;">
 						<h5><i>Position:</i> {{player.position}} </h5>
 						<h5><i>Height:</i> {{player.height}} </h5>
 						<h5><i>Weight:</i> {{player.weight}} lbs. </h5>

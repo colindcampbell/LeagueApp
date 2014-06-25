@@ -3,4 +3,5 @@ class Player < ActiveRecord::Base
   has_many :basketball_stats
   has_many :football_stats
   has_many :stats
+  has_many :games, through: :stats
 end

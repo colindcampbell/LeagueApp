@@ -1,12 +1,14 @@
 <div>
 	<div class="modal-header">
 	  <button type="button" class="close" x-ng-click="cancel();" aria-hidden="true">&times;</button>
-	  <h4 class="modal-title">( Add ) <small> Add a day </small></h4>
+	  <h4 class="modal-title">( Add ) <small> a Day to {{league.name}}</small></h4>
 	</div>
-	<div class="modal-body" style="display:inline-block; min-height:290px;">
-		<form ng-submit="saveDay();" class="form-group">
-		  <datepicker datepicker-mode="date" ng-model="day.date" min-date="league.start_date" max-date="league.end_date" show-weeks="false" class="well well-sm"></datepicker>
-		  <center><input type="submit" value="Add Day" class="btn btn-primary btn-small"></center>
-		</form>
+	<div class="modal-body" style="display:inline-block; min-height:290px; margin:0 auto;">
+		<center>
+			<form ng-submit="saveDay();" class="form-group">
+			  <datepicker datepicker-mode="date" ng-model="day.date" min-date="league.start_date" max-date="league.end_date" show-weeks="false" class="well well-sm"></datepicker>
+			  <input type="submit" value="Add Day" class="btn btn-primary btn-small">
+			</form>
+		</center>
 	</div>
 </div>

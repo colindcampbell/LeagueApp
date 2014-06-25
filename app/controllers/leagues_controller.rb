@@ -1,8 +1,12 @@
 class LeaguesController < ApplicationController
   before_action :set_league, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user, only: :index
+  before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
 
+  def allLeagues
+    @leagues = League.all
+    respond_with @leagues
+  end
 
   # GET /leagues
   def index
@@ -63,6 +67,6 @@ class LeaguesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def league_params
-      params.require(:league).permit(:name, :start_date, :end_date, :description, :user_id)
+      params.require(:league).permit(:name, :start_date, :end_date, :description, :user_id, :locations, :sport)
     end
 end

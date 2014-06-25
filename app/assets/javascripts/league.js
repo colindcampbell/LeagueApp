@@ -15,28 +15,19 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
       url: "/league",
       templateUrl: "userLeague.html"
     })
-    .state('standings', {
-      url: "/standings",
-      templateUrl: "standings.html"
+    .state('results', {
+      url: "/results",
+      templateUrl: "results.html"
     });
-    // .state('players', {
-    //   url: "/players",
-    //   templateUrl: "players.html"
-    // })
-    // .state('new-player', {
-    //   url: "/new-player",
-    //   templateUrl: "player_form.html"
-    // });
-    // RestangularProvider.setBaseUrl('localhost:3000/');
-    // RestangularProvider.setRequestSuffix('.json');
   });
 
 
 leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal', function($scope, Restangular, $state, $modal) {
 
-  $scope.leagueID;
+  $scope.leagueID = null;
   $scope.day = {};
   $scope.game = {};
+  $scope.stat = {};
   $scope.leagueTeams = [];
   $scope.leagueDays = [];
   $scope.leagueMonths = [];
@@ -44,6 +35,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   $scope.leagueGames = [];
   $scope.currentMonth = null;
   $scope.gameAdd = true;
+  $scope.user = Restangular.one('users').get().$object;
   var months = [
     {number:1, name:"January"},
     {number:2, name:"February"},
@@ -129,17 +121,8 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
     $scope.saveDay = function() {
       $scope.day.league_id = league.id;
-      Restangular.all('days').post($scope.day).then(function(leagues) {
-        var currentLeague = {};
-        //Restangular returns all of the leagues for this user, so we have to find the current league with this loop
-        for(i=0;i<leagues.length;i++){
-          if(leagues[i].id == league.id){
-            currentLeague = leagues[i];
-          }
-        }
-        //Finding the most recently added day from the current league and pushing it onto the scope
-        var daysSorted = currentLeague.days.sort(function(a,b){return a.id - b.id});
-        league.days.push(daysSorted[daysSorted.length-1]);
+      Restangular.all('days').post($scope.day).then(function(day) {
+        league.days.push(day);
         $modalInstance.dismiss('cancel');
         $scope.day = {};
       }, function(errors) {
@@ -155,29 +138,144 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     });
   };
 
-  $scope.saveGame = function(dayID, dayIndex) {
-    $scope.game.day_id = dayID;
-    $scope.game.home_score = 0;
-    $scope.game.away_score = 0;
-    Restangular.all('games').post($scope.game).then(function(){
-      $scope.league.days[dayIndex].games.push($scope.game);
-      $scope.game = {};
+  //New Game Modal
+  $scope.newGame = function (day, league, dayIndex) {
+    console.log(dayIndex);
+    var modalInstance = $modal.open({
+      templateUrl: 'game_new.html',
+      controller: GameNewCtrl,
+      // size: 'md',
+      resolve: {
+        league: function () {
+          return league;
+        },
+        day: function () {
+          return day;
+        },
+        dayIndex: function () {
+          return dayIndex;
+        }
+      }
     });
   };
+  //New Day Modal Controller
+  var GameNewCtrl = function ($scope, $modalInstance, league, day, dayIndex) {
+    $scope.day = day;
+    $scope.game = {};
+    $scope.game.day_id = day.id;
+    $scope.game.date = day.date;
+    $scope.game.home_score = 0;
+    $scope.game.away_score = 0;
+    $scope.league = league;
+    // console.log($scope.game);
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.saveGame = function() {
+      Restangular.all('games').post($scope.game).then(function(game) {
+        //The Day index is the index after sorting, so I have to re-sort the league days (by parsing the dates into integers) to insert the game into the right index on the scope:
+        league.days.sort(function(a,b){
+          return parseInt(a.date.split('-')[0] + a.date.split('-')[1] + a.date.split('-')[2]) - parseInt(b.date.split('-')[0] + b.date.split('-')[1] + b.date.split('-')[2]);
+        })[dayIndex].games.push(game);
 
-  $scope.editGame = function(game) {
-    $scope.gameAdd = false;
-    $scope.game = game;
+        $modalInstance.dismiss('cancel');
+        $scope.game = {};
+      }, function(errors) {
+          $scope.errors = errors.data;
+        });
+    };
   };
 
-  $scope.updateGame = function(game){
-    Restangular.restangularizeElement(null, game, 'games');
-    game.put().then(function(){
-      $scope.game = {};
-      $scope.playerAdd = true;
-    }, function(errors) {
-        $scope.errors = errors.data;
-      });
+  //Edit Game Modal
+  $scope.editGame = function (game, league) {
+    var modalInstance = $modal.open({
+      templateUrl: 'game_edit.html',
+      controller: GameEditCtrl,
+      resolve: {
+        game: function () {
+          return game;
+        },
+        league: function () {
+          return league;
+        }
+      }
+    });
+  };
+  //Edif Game Modal Controller
+  var GameEditCtrl = function ($scope, $modalInstance, game, league) {
+    // console.log(league);
+    $scope.game = game;
+    $scope.league = league;
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.updateGame = function(game){
+      //Add determine winner function
+      Restangular.restangularizeElement(null, game, 'games');
+      game.put().then(function(){
+        $scope.game = {};
+        $modalInstance.dismiss('cancel');
+      }, function(errors) {
+          $scope.errors = errors.data;
+        });
+    };
+  };
+
+  $scope.setStats = function(players, game) {
+    $scope.gamePlayers = players;
+    $scope.statGame = game;
+  };
+
+  //New Stat Modal
+    $scope.newStat = function (player, game) {
+    var modalInstance = $modal.open({
+      templateUrl: 'basketball_stat_new.html',
+      controller: bbStatNewCtrl,
+      size: 'sm',
+      resolve: {
+        player: function () {
+          return player;
+        },
+        game: function () {
+          return game;
+        }
+      }
+    });
+  };
+  //New Stat Modal Controller
+  var bbStatNewCtrl = function ($scope, $modalInstance, game, player) {
+    $scope.player = player;
+    $scope.stat = {};
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.saveStat = function() {
+      $scope.stat.game_id = game.id;
+      $scope.stat.player_id = player.id;
+      Restangular.all('stats').post($scope.stat).then(function(newStat) {
+        player.stats.push(newStat);
+        $modalInstance.dismiss('cancel');
+        $scope.stat = {};
+      }, function(errors) {
+          $scope.errors = errors.data;
+        });
+    };
+  };
+
+  //Determining the win percentage of each team for standings sort
+  $scope.winPercent = function(team) {
+    if(team.wins>0 && team.losses===0){
+      return -team.wins;
+    }
+    else if(team.wins>0){
+      return -team.wins/(team.wins+team.losses);
+    }
+    else if(team.wins===0 && team.losses>0){
+      return team.losses;
+    }
+    else{
+      return 50000;
+    }
   };
 
   //Removing teams from your league

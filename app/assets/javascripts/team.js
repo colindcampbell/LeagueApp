@@ -9,16 +9,12 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
     defaults.common['Accept'] = 'application/json';
 }]).config(function($stateProvider, $urlRouterProvider) {
   // For any unmatched url, redirect to /teams
-  $urlRouterProvider.otherwise("/teams");
+  $urlRouterProvider.otherwise("/leagues");
   // Now set up the states
   $stateProvider
     .state('leagues', {
       url: "/leagues",
       templateUrl: "leagues.html"
-    })
-    .state('teams', {
-      url: "/teams",
-      templateUrl: "teams.html"
     })
     .state('players', {
       url: "/players",
@@ -32,7 +28,7 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
 teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', function($scope, Restangular, $state, $modal) {
 
   $scope.user = Restangular.one('users').get().$object;
-  $scope.leagues = Restangular.all('leagues').getList().$object;
+  $scope.leagues = Restangular.all('leagues').all('allLeagues').getList().$object;
   $scope.playerAdd = true;
   $scope.teamID = null;
 
@@ -63,17 +59,16 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
       }
     });
   };
-  //New Player Controller
+  //New Player Modal Controller
   var PlayerNewCtrl = function ($scope, $modalInstance, players) {
     $scope.player = {};
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
     $scope.savePlayer = function() {
-      Restangular.all('players').post($scope.player).then(function(team) {
-        //pushing the last element of the response (the newest player) onto the scope. I had to sort by ID first because they are returned sorted by last name
-        var playersSorted = team.players.sort(function(a,b){return a.id - b.id});
-        players.push(playersSorted[playersSorted.length-1]);
+      Restangular.all('players').post($scope.player).then(function(player) {
+        //pushing player onto the scope
+        players.push(player);
         $scope.player = {};
         $modalInstance.dismiss('cancel');
       }, function(errors) {

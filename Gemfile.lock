@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/pivotal/jasmine-gem.git
+  revision: 869e99a5014558e6a60a294c4090989d76c65a3e
+  specs:
+    jasmine (2.0.2)
+      jasmine-core (~> 2.0.0)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -53,6 +63,7 @@ GEM
     execjs (2.1.0)
     hike (1.2.3)
     i18n (0.6.9)
+    jasmine-core (2.0.0)
     jquery-rails (3.1.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -66,6 +77,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.10.1)
     pg (0.17.1)
+    phantomjs (1.9.7.1)
     polyglot (0.3.5)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -149,6 +161,7 @@ DEPENDENCIES
   bootstrap-modal-rails
   bootstrap-sass
   coffee-rails (~> 4.0.0)
+  jasmine!
   jquery-rails
   lodash-rails
   pg

@@ -1,5 +1,6 @@
 class DaysController < ApplicationController
   before_action :set_day, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
   
   # GET /days
@@ -26,9 +27,12 @@ class DaysController < ApplicationController
   def create
     @day = Day.new(day_params)
     if @day.save
-      redirect_to root_path, notice: 'Day was successfully created.'
+      redirect_to @day, notice: 'Day was successfully created.'
     else
-      render action: 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @day.errors, status: :unprocessable_entity }
+      end
     end
   end
 

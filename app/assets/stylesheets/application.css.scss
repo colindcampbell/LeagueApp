@@ -13,5 +13,20 @@
  */
 
  @import "bootstrap";
+ @import url(http://fonts.googleapis.com/css?family=Ubuntu);
+ @import url(http://fonts.googleapis.com/css?family=Roboto);
 
  .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+ body{
+ 	font-family: 'Roboto', helvetica;
+ 	background-color: #24587a;
+ }
+
+ h1, h2 {
+ 	font-family: 'Ubuntu', tahoma;
+ 	color:white;
+ }
+
+
+

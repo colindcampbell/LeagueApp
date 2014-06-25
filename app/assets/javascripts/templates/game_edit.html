@@ -1,1 +1,53 @@
-game_edit.html
+<div>
+	<div class="modal-header">
+    <button type="button" class="close" x-ng-click="cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">( Update ) <small> this game</small></h4>
+	</div>
+	<div class="modal-body">
+		<form ng-submit="updateGame(game);" class="form-horizontal">
+			<div class="form-group">
+			  <label for="homeTeam" class='col-sm-3 control-label'>Home Team:</label>
+			  <div class="col-sm-9">
+				  <select x-ng-model="game.home_team_id" name="homeTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
+		        <option value="">-- choose home team --</option>
+		      </select>
+		      <input x-ng-model="game.home_score" type="number" value="Home Score" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="awayTeam" class='col-sm-3 control-label'>Away Team:</label>
+			  <div class="col-sm-9">
+				  <select ng-model="game.away_team_id" name="awayTeam" ng-options="team.id as team.name for team in league.teams" class="form-control">
+		        <option value="">-- choose away team --</option>
+		      </select>
+		      <input x-ng-model="game.away_score" type="number" value="Away Score" class="form-control">
+				</div>
+			</div>
+			<div class="form-group" x-ng-if"!game.final">
+			  <label for="half" class='col-sm-3 control-label'>Halftime Score:</label>
+			  <div class="col-sm-1">
+				  <input x-ng-model="game.half" name="half" class="form-control" type="checkbox">
+				</div>
+			</div>
+			<div class="form-group" x-ng-if"!game.final">
+			  <label for="final" class='col-sm-3 control-label'>Score Final:</label>
+			  <div class="col-sm-1">
+				  <input x-ng-model="game.final" name="final" class="form-control" type="checkbox">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="location" class='col-sm-3 control-label'>Location:</label>
+			  <div class="col-sm-9">
+				  <input x-ng-model="game.location" name="location" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label style="margin-top:30px;" for="gameTime" class='col-sm-3 control-label'>Game Time:</label>
+			  <div class="col-sm-9">
+				  <timepicker x-ng-model="game.time" name="gameTime" show-meridian="true"></timepicker>
+				  <input type="submit" value="Save Game" class="btn btn-primary">
+				</div>
+			</div>
+    </form>
+	</div>
+</div>

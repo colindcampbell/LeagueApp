@@ -1,12 +1,15 @@
 LeagueApp::Application.routes.draw do
 
+  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   resources :sessions
-  resources :leagues
+  resources :leagues do
+    get 'allLeagues', on: :collection
+  end
   resources :days
   resources :games
   resources :teams
   resources :users
-
+  resources :stats
   resources :teams
   resources :players do
     get 'teamPlayers', on: :collection

@@ -1,12 +1,26 @@
 <div class="container-fluid" x-ng-controller="TeamsCtrl">
+	<div class="row">
+		<div class="col-sm-6">
 
-	<h1>Here are the Leagues</h1>
+			<h2>( Search for Leagues )</h2>
 
-	<div x-ng-repeat="league in leagues">
-		{{league.name}} | {{league.start_date}}<br>
-		<div class="btn btn-success" x-ng-click="saveLeagueTeam(team.id, league);">Join this league</div><br><br>
-		
+			<div x-ng-repeat="league in leagues">
+				{{league.name}} | {{league.start_date}}<br>
+				<div class="btn btn-success" x-ng-click="saveLeagueTeam(team.id, league);">Join this league</div><br><br>
+			</div>
 
+		</div>
+
+		<div class="col-sm-6">
+
+			<h2>( Your Leagues )</h2>
+			
+			<div>
+				{{user.teams[0].name}}<br>
+			</div>
+
+			<div x-ng-repeat="league in teamLeagues">{{league.name}} | {{league.start_date}}</div>
+
+		</div>
 	</div>
-
 </div>

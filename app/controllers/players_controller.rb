@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
 
   def allPlayers
@@ -15,6 +16,7 @@ class PlayersController < ApplicationController
 
   # GET /players/1
   def show
+    respond_with @player
   end
 
   # GET /players/new
@@ -32,7 +34,7 @@ class PlayersController < ApplicationController
     @player.team = current_user.teams.first
 
     if @player.save
-      redirect_to current_user.teams.first, notice: 'Player was successfully created.'
+      redirect_to @player, notice: 'Player was successfully created.'
     else
       render action: 'new'
     end
@@ -51,7 +53,6 @@ class PlayersController < ApplicationController
         format.html { render 'new' }
         format.json { render json: @player.errors, status: :unprocessable_entity }
       end
-      # render action: 'edit'
     end
   end
 

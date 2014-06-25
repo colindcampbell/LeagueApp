@@ -1,6 +1,71 @@
-<h1>Editing league</h1>
 
-<%= render 'form' %>
+<div id="edit_league_modal">
+	<div class="modal-header">
+	    <%if !@league.errors.any? %><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><% end %>
+	    <h4 class="modal-title" id="myModalLabel">( Edit League ) <small> Update the Name, Dates and Locations of your new League</small></h4>
+	</div>
+	<div class="modal-body">
 
-<%= link_to 'Show', @league %> |
-<%= link_to 'Back', leagues_path %>
+		 <% if @league.errors.any? %>
+	    <ul class="list-group">
+	      <% @league.errors.full_messages.each do |message| %>
+	        <li class="list-group-item list-group-item-danger col-sm-offset-1"><%= message %></li>
+	      <% end %>
+	    </ul>
+  	<% end %>
+		
+		<%= form_for @league, :html => {:class => 'form-horizontal', :role => 'form'} do |l| %>
+			<div class='form-group'>
+				<label for="league-name" class='col-sm-3 control-label'>Name</label>
+				<div class='col-sm-9'>
+					<%= l.text_field :name, :class => 'form-control', :id => 'league-name', :placeholder => 'Please create a unique name' %>
+				</div>
+			</div>
+			<div class='form-group'>
+				<label for="league-start" class='col-sm-3 control-label'>Start Date</label>
+				<div class='col-sm-9'>
+					<%= l.date_field :start_date, :class => 'form-control', :id => 'league-start'%>
+				</div>
+			</div>
+			<div class='form-group'>
+				<label for="league-end" class='col-sm-3 control-label'>End Date</label>
+				<div class='col-sm-9'>
+					<%= l.date_field :end_date, :class => 'form-control', :id => 'league-end'%>
+				</div>
+			</div>
+			<div class='form-group'>
+				<label for="league-locations" class='col-sm-3 control-label'>Locations</label>
+				<div class='col-sm-9'>
+					<%= l.text_field :locations, :class => 'form-control', :id => 'league-locations', :placeholder => 'Locations' %>
+				</div>
+			</div>
+			<div class='form-group'>
+				<label for="league-sport" class='col-sm-3 control-label'>Sport</label>
+				<div class='col-sm-9'>
+					<%= l.select :sport, [['Basketball','Basketball'],['Football', 'Football']], :class => 'form-control', :id => 'league-sport', :placeholder => 'Basketball or Football' %>
+				</div>
+			</div>
+			<div class='form-group'>
+				<label for="league-description" class='col-sm-3 control-label'>Description</label>
+				<div class='col-sm-9'>
+					<%= l.text_field :description, :class => 'form-control', :id => 'league-description', :placeholder => 'Description (optional)' %>
+				</div>
+			</div>
+			<div class='form-group'>
+				<div class="col-sm-offset-3 col-sm-9">
+					<% if @league.errors.any? %>
+						<%= l.submit "Submit", :class => 'btn btn-info', style: 'width:20%' %>
+						<%= link_to "Back", leagues_path, :class => 'btn btn-default', style: 'width:20%'  %>
+					<% else %>
+						<%= l.submit "Submit", :class => 'btn btn-info', style: 'width:20%'  %>
+						<button type="button" class="btn btn-default" style="width:20%" data-dismiss="modal">Close</button>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+		
+	</div>
+</div>
+
+
+	  

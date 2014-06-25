@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
 
   # GET /games
@@ -36,6 +37,7 @@ class GamesController < ApplicationController
   # PATCH/PUT /games/1
   def update
     if @game.update(game_params)
+      @game.outcome
       respond_to do |format|
         format.html { redirect_to root_path }
         format.json { render nothing: true, status: :no_content }
@@ -65,6 +67,6 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params.require(:game).permit(:day_id, :home_team_id, :home_score, :away_team_id, :away_score, :time, :final, :half )
+      params.require(:game).permit(:day_id, :home_team_id, :home_score, :away_team_id, :away_score, :time, :final, :half, :recorded, :location, :date)
     end
 end

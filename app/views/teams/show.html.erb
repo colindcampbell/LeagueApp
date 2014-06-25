@@ -1,16 +1,42 @@
-<div class="container-fluid"  x-ng-app="teamapp">
+<div class="container-fluid"  x-ng-app="teamapp" style="margin-top:70px">
+  
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navBar">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/teams/<%=@team.id%>">( Rummle Team ) <small><%= @team.name%></small></a>
+      </div>
 
-  <ul class="nav nav-tabs">
-    <li>
-      <a ui-sref="leagues">View All Leagues</a>
-    </li> 
-    <li>
-      <a ui-sref="teams">View All Teams</a>
-    </li>
-    <li>
-      <a ui-sref="players">View All Players</a>
-    </li>
-  </ul>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a ui-sref="leagues">Find Leagues</a>
+          </li> 
+          <li>
+            <a ui-sref="players">Players</a>
+          </li>
+          <% if current_user %>
+            <li><%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
+            </li>
+          <% else %>
+            <li>
+              <%= link_to "Sign Up", root_path %>
+            </li>
+            <li>
+              <a data-toggle="modal" data-target="#signinModal" data-remote="<%= new_session_path(current_user) %> #new_session_modal">Sign In</a>
+            </li>
+          <% end %>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
  
 
   <div>
@@ -31,12 +57,5 @@
     </div>
 
   </div>
-
-
-	<div class="row">
-
-		<%= link_to 'Edit', edit_team_path(@team) %> |
-		<%= link_to "Logout ", session_path(session), method: :delete %>
-	</div>
 
 </div>

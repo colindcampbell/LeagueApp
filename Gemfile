@@ -49,6 +49,7 @@ end
 group :development, :test do
 	gem 'rspec-rails'
 	gem 'shoulda-matchers'
+	gem 'jasmine', github: "pivotal/jasmine-gem"
 end
 
 gem 'active_model_serializers'
