@@ -5,7 +5,7 @@ class DaysController < ApplicationController
   
   # GET /days
   def index
-    @days = Day.all.sort_by{|dt| dt.date}
+    @days = Day.all
     respond_with @days
   end
 
