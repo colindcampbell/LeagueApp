@@ -16,7 +16,7 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
       url: "/team",
       templateUrl: "userTeam.html"
     });
-    // RestangularProvider.setBaseUrl('localhost:3000/');
+    RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
     // RestangularProvider.setRequestSuffix('.json');
   });
 

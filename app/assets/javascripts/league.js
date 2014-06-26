@@ -19,6 +19,7 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
       url: "/results",
       templateUrl: "results.html"
     });
+    RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
   });
 
 
