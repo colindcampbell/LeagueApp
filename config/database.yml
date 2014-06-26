@@ -56,5 +56,5 @@ production:
   encoding: unicode
   database: league_app_production
   pool: 5
-  username: league_app
+  username:
   password:
