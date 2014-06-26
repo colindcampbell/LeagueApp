@@ -3,7 +3,6 @@ class Team < ActiveRecord::Base
 	has_many :away_games, class_name: "Game", foreign_key: "away_team_id", inverse_of: :away_team
 	has_many :players
 
-
 	validates_presence_of :name, message:' must be present for each team'
 
   has_many :league_teams

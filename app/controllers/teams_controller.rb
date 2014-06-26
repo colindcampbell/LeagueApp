@@ -13,9 +13,6 @@ class TeamsController < ApplicationController
 
   # GET /teams/1
   def show
-    @league_team = LeagueTeam.new
-    @leagues = League.all
-    @team_leagues = @team.leagues
     respond_with @team
   end
 

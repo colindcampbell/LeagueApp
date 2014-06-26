@@ -1,28 +1,15 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Recstar is an app to connect recreation league administrators with teams that might be interested in joining their leagues. A user can sign up as a team owner or league administrator. Teams owners add players then search for and join leagues, while league admins accept teams and create games and stats for each league they create.
 
-Things you may want to cover:
+This App uses:
+Ruby 2.0
+Rails 4.0.4
+AngularJS
+Angular UI Router
+Angular UI Bootstrap
+Restangular for restful API interaction with the backend
+Active Model Serializer with json serialization of data
+Bcrypt for user authentication
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Please check Gemfile and Gemfile lock for versions

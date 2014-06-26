@@ -43,11 +43,9 @@
 			<accordion close-others="true">
 				<accordion-group x-ng-repeat="team in league.teams | orderBy:winPercent" style="margin-top:0px;">
 					<accordion-heading>
-
 						<h4 style="margin: 0 auto 0 auto;">{{team.name}} 
 							<small x-ng-repeat="lt in leagueTeams" x-ng-if="lt.league_id == league.id && lt.team_id == team.id">( {{lt.wins}} - {{lt.losses}} )</small>
 						</h4>
-
 					</accordion-heading>
 					<accordion close-others="true">
 						<accordion-group heading="Home Games">
