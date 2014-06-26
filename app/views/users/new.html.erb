@@ -1,21 +1,19 @@
 <div class="container-fluid">
 	<div class="row">
-		
-
-		<%= render 'form' %>
-
-		<br>
-
-		
+		<div class="col-sm-4"></div>
+		<div class="col-sm-4">
+			<center>
+				<h1>( RecStar )</h1>
+				<% if current_user %>
+					<%= link_to "Logout ", session_path(session), method: :delete %>
+				<% else %>
+					<a data-toggle="modal" class="btn btn-default btn-lrg btn-block" style="width:50%" data-target="#signinModal" data-remote="<%= new_session_path(current_user) %> #new_session_modal">Sign In</a>
+				<% end %>
+			</center>
+		</div>
 	</div>
-	<br>
 	<div class="row">
-		<div class="col-sm-10 col-sm-offset-2">
-		<% if current_user %>
-			<%= link_to "Logout ", session_path(session), method: :delete %>
-		<% else %>
-			<a data-toggle="modal" class="btn btn-info btn-lrg" data-target="#signinModal" data-remote="<%= new_session_path(current_user) %> #new_session_modal">Sign In</a>
-		<% end %>
+		<%= render 'form' %>
 	</div>
 </div>
 

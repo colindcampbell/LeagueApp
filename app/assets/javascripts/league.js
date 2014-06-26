@@ -221,9 +221,10 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
   };
 
-  $scope.setStats = function(players, game) {
+  $scope.setStats = function(players, game, team) {
     $scope.gamePlayers = players;
     $scope.statGame = game;
+    $scope.statTeam = team;
   };
 
   //New Stat Modal

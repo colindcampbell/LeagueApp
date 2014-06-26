@@ -25,6 +25,16 @@
               <li>
                 <a ui-sref="results">Results and Stats</a>
               </li>
+              <% if current_user.user_type == 'team_owner' %>
+              <li>
+                <a href="/teams/<%=current_user.teams[0].id%>">My Team</a>
+              </li>
+              <%end%>
+              <% if current_user.user_type == 'league_admin' %>
+              <li>
+                <a href="/leagues">My Leagues</a>
+              </li>
+              <%end%>
             <% if current_user && current_user.id == @league.user_id %>
               <li role="presentation" class="divider"></li>
               <li>
@@ -36,6 +46,8 @@
               <%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
             </li>
           <% elsif current_user %>
+            </ul>
+          </li>
             <li>
               <%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
             </li>

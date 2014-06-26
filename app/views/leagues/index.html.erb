@@ -7,12 +7,12 @@
     <h1>Your Leagues</h1>
 
     <% League.where(:user_id => current_user.id).each do |l| %>
-      <div class="list-group-item" style="background-color:#ccc;overflow:scroll">
+      <div class="list-group-item" >
         <%= link_to "( #{l.name} )", league_path(l), class: 'btn btn-default btn-block', id: 'leagueList' %>
       </div>
     <% end %>
 
-    <button data-toggle="modal" data-target="#leagueModal" data-remote="<%= new_league_path %> #new_league_modal" class="btn btn-default btn-block" style="background-color: #ccc; ">+ League</button><br>
+    <button data-toggle="modal" data-target="#leagueModal" data-remote="<%= new_league_path %> #new_league_modal" class="btn btn-default btn-block">+ League</button><br>
     <br>
 
     <%= link_to "Logout ", session_path(session), method: :delete %>

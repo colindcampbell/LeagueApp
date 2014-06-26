@@ -16,7 +16,7 @@
       </div>
     <% end %>
 
-    <h1>Run Leagues</h1>
+    <h2>Run Leagues</h2>
     <div class="actions">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
@@ -24,7 +24,7 @@
       <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "league_admin" %><br>
-      <center><%= f.submit "Sign Up", class: "btn btn-info"%></center>
+      <%= f.submit "Sign Up", class: "btn btn-info"%>
     </div>
 
   <% end %>
@@ -35,7 +35,7 @@
 
   <%= form_for @user, class: 'form-horizontal'  do |f| %>
 
-    <h1 style="text-align:right">Run Teams</h1>
+    <h2 style="text-align:right">Run Teams</h2>
     <div class="actions">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
@@ -43,7 +43,7 @@
       <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
-      <center><%= f.submit "Sign Up", class: "btn btn-info" %></center>
+      <span style="float:right"><%= f.submit "Sign Up", class: "btn btn-info" %></span>
     </div>
 
   <% end %>

@@ -9,13 +9,13 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
     defaults.common['Accept'] = 'application/json';
 }]).config(function($stateProvider, $urlRouterProvider) {
   // For any unmatched url, redirect to /teams
-  $urlRouterProvider.otherwise("/leagues");
+  $urlRouterProvider.otherwise("/team");
   // Now set up the states
   $stateProvider
-    .state('leagues', {
-      url: "/leagues",
-      templateUrl: "leagues.html"
-    })
+    .state('team', {
+      url: "/team",
+      templateUrl: "userTeam.html"
+    });
     // RestangularProvider.setBaseUrl('localhost:3000/');
     // RestangularProvider.setRequestSuffix('.json');
   });

@@ -1,3 +1,4 @@
+
 <%= form_for @team, class: 'form-horizontal' do |f| %>
   <% if @team.errors.any? %>
     <div id="error_explanation">
@@ -18,7 +19,5 @@
     <%= f.hidden_field :wins, value: 0 %>
     <%= f.hidden_field :losses, value: 0 %>
     <%= f.submit "Add Team", class: "btn btn-info"%><br>
-
-    <h1>Might eventually have map to add location</h1>
   </div>
 <% end %>

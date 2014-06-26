@@ -12,7 +12,7 @@
 							<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.home_team_id == team.id">
 									<h4>( {{game.home_score}} ) {{team.name}} 
-										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game)">Stats</span>
+										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game, team)">Stats</span>
 									</h4>
 								</div>
 								-vs-
@@ -55,7 +55,7 @@
 			  <td>Blk</td>
 			  <td>Stl</td>
 			  <td>PF</td>
-			  <td style="width:50px;"><span class="btn btn-xs btn-info" x-ng-click="newStat(player, statGame);" x-ng-if="!player.stats[0]">Add Stats</span></td>
+			  <td style="width:50px;"><span class="btn btn-xs btn-info" x-ng-click="newStat(player, statGame);" x-ng-if="!player.stats[0] && (user.id==league.user_id || user.id==statTeam.user_id)">Add Stats</span></td>
 			</tr>
 			<tr x-ng-repeat="stat in player.stats" x-ng-if="stat.game_id == statGame.id">
 				<td>{{stat.points}}</td>
@@ -66,7 +66,7 @@
 				<td>{{stat.steals}}</td>
 				<td>{{stat.fouls}}</td>
 				<td>
-					<span class="btn btn-xs btn-warning" x-ng-click="editStat(stat, player);">Edit Stats</span>
+					<span class="btn btn-xs btn-warning" x-ng-click="editStat(stat, player);" x-ng-if="user.id==league.user_id || user.id==statTeam.user_id">Edit Stats</span>
 				</td>
 			</tr>
 			</tbody>

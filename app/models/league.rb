@@ -12,6 +12,7 @@ class League < ActiveRecord::Base
   def destroy_children
   	Day.where(league_id: self.id).destroy_all
     Game.where(league_id: self.id).destroy_all
+    LeagueTeam.where(league_id: self.id).destroy_all
   end
   
 end
