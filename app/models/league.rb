@@ -1,7 +1,7 @@
 class League < ActiveRecord::Base
   belongs_to :user
   has_many :days
-  has_many :games, through: :days
+  has_many :games
   has_many :league_teams
   has_many :teams, through: :league_teams
 

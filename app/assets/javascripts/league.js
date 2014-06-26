@@ -68,6 +68,9 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
 
   $scope.setLeague = function(id) {
     $scope.leagueID = id;
+    Restangular.all('league_teams').getList().then(function(leagueTeams){
+      $scope.leagueTeams = leagueTeams;
+    });
     //active model serializer embeds IDs of teams, so I have to loop through the array of IDs to save all of the teams that belong to a league
     Restangular.one('leagues', id).get().then(function(league){
       $scope.league = league;
@@ -131,6 +134,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
   };
 
+  //'Restangularizing' an element gives it restful actions
   $scope.deleteDay = function(day) {
     Restangular.restangularizeElement(null, day, 'days');
     day.remove().then(function() {
@@ -140,7 +144,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
 
   //New Game Modal
   $scope.newGame = function (day, league, dayIndex) {
-    console.log(dayIndex);
     var modalInstance = $modal.open({
       templateUrl: 'game_new.html',
       controller: GameNewCtrl,
@@ -162,12 +165,12 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   var GameNewCtrl = function ($scope, $modalInstance, league, day, dayIndex) {
     $scope.day = day;
     $scope.game = {};
+    $scope.game.league_id = league.id;
     $scope.game.day_id = day.id;
     $scope.game.date = day.date;
     $scope.game.home_score = 0;
     $scope.game.away_score = 0;
     $scope.league = league;
-    // console.log($scope.game);
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
@@ -203,7 +206,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   };
   //Edif Game Modal Controller
   var GameEditCtrl = function ($scope, $modalInstance, game, league) {
-    // console.log(league);
     $scope.game = game;
     $scope.league = league;
     $scope.cancel = function () {
@@ -317,7 +319,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   //Removing teams from your league
   $scope.deleteLeagueTeam = function(team){
     // get all league_teams
-    Restangular.all('league_teams').getList().$object.then(function(leagueTeams){
+    Restangular.all('league_teams').getList().then(function(leagueTeams){
       //loop through the league_teams
       for(i=0;i<leagueTeams.length;i++){
         var leagueTeam = leagueTeams[i];
@@ -325,7 +327,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
         if((leagueTeam.team_id == team.id) && (leagueTeam.league_id == $scope.leagueID)){
           leagueTeam.remove().then(function(){
             //remove the team from the scope
-            $scope.leagueTeams= _.without($scope.leagueTeams, team);
+            $scope.league.teams = _.without($scope.league.teams, team);
             return;
           });
         }

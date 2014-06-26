@@ -6,10 +6,10 @@ class Game < ActiveRecord::Base
   belongs_to :home_team, class_name: 'Team', foreign_key: "home_team_id", inverse_of: :home_games
   belongs_to :away_team, class_name: 'Team', foreign_key: "away_team_id", inverse_of: :away_games
 
-  def outcome
+  def outcome(leagueID)
     if self.final
-    	h = home_team
-    	a = away_team
+    	h = LeagueTeam.where(team_id: home_team.id, league_id:leagueID)[0]
+    	a = LeagueTeam.where(team_id: away_team.id, league_id:leagueID)[0]
     	if home_score == away_score
     		return 'T'
     	elsif home_score > away_score
