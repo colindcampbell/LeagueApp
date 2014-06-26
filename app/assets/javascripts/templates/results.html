@@ -18,7 +18,7 @@
 								-vs-
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.away_team_id == team.id">
 									<h4>( {{game.away_score}} ) {{team.name}} 
-										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game)">Stats</span>
+										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game, team)">Stats</span>
 									</h4>
 								</div>
 								<div><h5>{{game.time | date:'shortTime'}} @ {{game.location}}</h5></div>
