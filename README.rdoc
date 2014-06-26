@@ -13,3 +13,6 @@ Active Model Serializer with json serialization of data
 Bcrypt for user authentication
 
 Please check Gemfile and Gemfile lock for versions
+
+Visit the live version at:
+http://recstar.herokuapp.com
