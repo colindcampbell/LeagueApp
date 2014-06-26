@@ -1,5 +1,5 @@
 var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templates', 'restangular', 'ui.bootstrap']).config(
-    ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
+    ['$httpProvider', function($httpProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
     defaults.common["X-CSRF-TOKEN"] = authToken;
@@ -19,7 +19,7 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
       url: "/results",
       templateUrl: "results.html"
     });
-    RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
+    // RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
   });
 
 

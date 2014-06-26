@@ -1,6 +1,6 @@
 
 var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular', 'ui.bootstrap']).config(
-    ['$httpProvider', 'RestangularProvider', function($httpProvider, RestangularProvider) {
+    ['$httpProvider', function($httpProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
     var defaults = $httpProvider.defaults.headers;
     defaults.common["X-CSRF-TOKEN"] = authToken;
@@ -16,7 +16,7 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
       url: "/team",
       templateUrl: "userTeam.html"
     });
-    RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
+    // RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
     // RestangularProvider.setRequestSuffix('.json');
   });
 
