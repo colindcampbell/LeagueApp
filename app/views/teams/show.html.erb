@@ -16,7 +16,14 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <% if current_user %>
+          <% if current_user && current_user.user_type == 'league_admin' %>
+            <li><%= link_to "My Leagues", leagues_path%>
+            </li> 
+            <li><%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
+            </li> 
+            <% elsif current_user && current_user.user_type == 'team_owner' %>
+            <li><%= link_to "My Team", current_user.teams[0] %>
+            </li> 
             <li><%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
             </li>
           <% else %>
