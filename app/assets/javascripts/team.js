@@ -16,10 +16,6 @@ var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates',
       url: "/leagues",
       templateUrl: "leagues.html"
     })
-    .state('players', {
-      url: "/players",
-      templateUrl: "players.html"
-    });
     // RestangularProvider.setBaseUrl('localhost:3000/');
     // RestangularProvider.setRequestSuffix('.json');
   });

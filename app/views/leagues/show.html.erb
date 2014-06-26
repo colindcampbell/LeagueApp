@@ -17,15 +17,21 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a ui-sref="league">Schedule and Standings</a>
+            <a data-toggle="dropdown">Menu <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <li>
+                <a ui-sref="league">Schedule and Standings</a>
+              </li>
+              <li>
+                <a ui-sref="results">Results and Stats</a>
+              </li>
+            <% if current_user && current_user.id == @league.user_id %>
+              <li role="presentation" class="divider"></li>
+              <li>
+                <a data-toggle="modal" data-target="#editModal" data-remote="<%= edit_league_path(@league.id) %> #edit_league_modal">Edit League</a>
+              </li>
+            </ul>
           </li>
-          <li>
-            <a ui-sref="results">Results and Stats</a>
-          </li>
-          <% if current_user && current_user.id == @league.user_id %>
-            <li>
-              <a data-toggle="modal" data-target="#editModal" data-remote="<%= edit_league_path(@league.id) %> #edit_league_modal">Edit League</a>
-            </li>
             <li>
               <%= link_to "Logout " + current_user.email, session_path(session), method: :delete %>
             </li>

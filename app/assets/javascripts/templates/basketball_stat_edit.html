@@ -1,0 +1,56 @@
+<div >
+	<div class="modal-header">
+    <button type="button" class="close" x-ng-click="cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">( Edit ) <small> Stats for {{player.first_name}} {{player.last_name}}</small></h4>
+	</div>
+	<div class="modal-body">
+		<form ng-submit="updateStat(stat);" class="form-horizontal">
+			<div class="form-group">
+			  <label for="points" class='col-sm-6 control-label'>Points:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.points" name="points" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="orebs" class='col-sm-6 control-label'>Offensive Rebs:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.offensive_rebounds" name="orebs" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="drebs" class='col-sm-6 control-label'>Defensive Rebs:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.defensive_rebounds" name="drebs" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="assists" class='col-sm-6 control-label'>Assists:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.assists" name="assists" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="blocks" class='col-sm-6 control-label'>Blocks:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.blocks" name="blocks" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="steals" class='col-sm-6 control-label'>Steals:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.steals" name="steals" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+			  <label for="fouls" class='col-sm-6 control-label'>Fouls:</label>
+			  <div class="col-sm-6">
+				  <input ng-model="stat.fouls" name="fouls" class="form-control">
+				</div>
+			</div>
+			<div class="col-sm-offset-6 col-sm-6">
+			  <input type="submit" value="Update Stats" class="btn btn-primary">
+			</div>
+			<div class="clearfix">
+    </form>
+	</div>
+</div>

@@ -227,10 +227,10 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   };
 
   //New Stat Modal
-    $scope.newStat = function (player, game) {
+  $scope.newStat = function (player, game) {
     var modalInstance = $modal.open({
       templateUrl: 'basketball_stat_new.html',
-      controller: bbStatNewCtrl,
+      controller: StatNewCtrl,
       size: 'sm',
       resolve: {
         player: function () {
@@ -243,7 +243,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     });
   };
   //New Stat Modal Controller
-  var bbStatNewCtrl = function ($scope, $modalInstance, game, player) {
+  var StatNewCtrl = function ($scope, $modalInstance, game, player) {
     $scope.player = player;
     $scope.stat = {};
     $scope.cancel = function () {
@@ -256,6 +256,41 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
         player.stats.push(newStat);
         $modalInstance.dismiss('cancel');
         $scope.stat = {};
+      }, function(errors) {
+          $scope.errors = errors.data;
+        });
+    };
+  };
+
+  //Edit Stat Modal
+  $scope.editStat = function (stat, player) {
+    var modalInstance = $modal.open({
+      templateUrl: 'basketball_stat_edit.html',
+      controller: StatEditCtrl,
+      size: 'sm',
+      resolve: {
+        stat: function () {
+          return stat;
+        },
+        player: function () {
+          return player;
+        }
+      }
+    });
+  };
+  //Edit Stat Modal Controller
+  var StatEditCtrl = function ($scope, $modalInstance, stat, player) {
+    $scope.player = player;
+    $scope.stat = stat;
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.updateStat = function(stat){
+      //Add determine winner function
+      Restangular.restangularizeElement(null, stat, 'stats');
+      stat.put().then(function(){
+        $scope.stat = {};
+        $modalInstance.dismiss('cancel');
       }, function(errors) {
           $scope.errors = errors.data;
         });

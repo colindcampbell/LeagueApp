@@ -40,7 +40,6 @@ class StatsController < ApplicationController
         format.html { redirect_to @stat }
         format.json { render nothing: true, status: :no_content }
       end
-      # redirect_to root_path, notice: 'Player was successfully updated.'
     else
       respond_to do |format|
         format.html { render 'new' }
