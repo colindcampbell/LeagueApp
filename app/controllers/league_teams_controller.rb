@@ -1,6 +1,6 @@
 class LeagueTeamsController < ApplicationController
   before_action :set_league_team, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user, only: :index, :new, :edit, :create, :update, :delete
+  before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
 
   def index
