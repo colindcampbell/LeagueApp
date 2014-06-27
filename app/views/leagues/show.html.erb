@@ -25,12 +25,12 @@
               <li>
                 <a ui-sref="results">Results and Stats</a>
               </li>
-              <% if current_user.user_type == 'team_owner' %>
+              <% if current_user && current_user.user_type == 'team_owner' %>
               <li>
                 <a href="/teams/<%=current_user.teams[0].id%>">My Team</a>
               </li>
               <%end%>
-              <% if current_user.user_type == 'league_admin' %>
+              <% if current_user && current_user.user_type == 'league_admin' %>
               <li>
                 <a href="/leagues">My Leagues</a>
               </li>
