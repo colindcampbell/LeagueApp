@@ -26,6 +26,7 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
   $scope.playerAdd = true;
   $scope.teamID = null;
 
+  //Using ng-init with embedded ruby to get the team ID then getting that team json object with restangular. All team information is embedded in the team object with active model serializer
   $scope.setTeam = function(id) {
     $scope.teamID = id;
     $scope.teamLeagues = [];
@@ -84,7 +85,7 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
       }
     });
   };
-  //Edif Player Modal Controller
+  //Edit Player Modal Controller
   var PlayerEditCtrl = function ($scope, $modalInstance, player) {
     $scope.player = player;
     $scope.cancel = function () {
@@ -109,10 +110,13 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
     });
   };
 
+  //create a new LeagueTeam record to associate a team with the league sent in the params
   $scope.saveLeagueTeam = function(teamID, league){
     var newLeagueTeam = {team_id:teamID, league_id:league.id};
     newLeagueTeam.losses = 0;
     newLeagueTeam.wins = 0;
+    newLeagueTeam.paid = false;
+    newLeagueTeam.place = null;
     Restangular.all('league_teams').post(newLeagueTeam).then(function(){
       $scope.teamLeagues.push(league);
     });

@@ -21,7 +21,6 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
     });
   });
 
-
 leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal', function($scope, Restangular, $state, $modal) {
 
   $scope.leagueID = null;
@@ -51,6 +50,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     {number:12, name:"December"}
   ];
 
+  //setting todays date for comparison
   $scope.today = function() {
     var today = new Date();
     var day = (today.getDate()).toString();
@@ -69,6 +69,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     return parseInt(date.split('-')[0] + date.split('-')[1] + date.split('-')[2]);
   };
 
+  //Using ng-init with embedded ruby to get the league ID then getting that league with restangular. All league information is embedded in the league object with active model serializer
   $scope.setLeague = function(id) {
     $scope.leagueID = id;
     Restangular.all('league_teams').getList().then(function(leagueTeams){
@@ -342,6 +343,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     });
   };
 
+  //function to clear errors, also needs to be present in modal controllers because they have their own scope
   $scope.clearErrors = function() {
     $scope.errors = null;
   };
