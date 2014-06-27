@@ -29,7 +29,10 @@ class StatsController < ApplicationController
     if @stat.save
       redirect_to @stat, notice: 'Stat was successfully created.'
     else
-      render action: 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @stat.errors, status: :unprocessable_entity }
+      end
     end
   end
 

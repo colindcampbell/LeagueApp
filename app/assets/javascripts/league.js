@@ -7,7 +7,7 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
     defaults.patch['Content-Type'] = 'application/json';
     defaults.common['Accept'] = 'application/json';
 }]).config(function($stateProvider, $urlRouterProvider) {
-  // For any unmatched url, redirect to /teams
+  // For any unmatched url, redirect to /league
   $urlRouterProvider.otherwise("/league");
   // Now set up the states
   $stateProvider
@@ -19,7 +19,6 @@ var leagueApp = angular.module('leagueapp', ['ngResource', 'ui.router', 'templat
       url: "/results",
       templateUrl: "results.html"
     });
-    // RestangularProvider.setBaseUrl('http://recstar.herokuapp.com/');
   });
 
 
@@ -59,11 +58,13 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     var year = (today.getFullYear()).toString();
     $scope.currentMonth = month;
     $scope.currentYear = year;
+    //turning d=today's date into an int for comparison
     $scope.dateToday = parseInt(year+('0' + month).slice(-2)+('0' + day).slice(-2));
     $scope.day.date = today;
   };
   $scope.today();
 
+  //turns a date into an int for comparison to today's date
   $scope.dayInt = function(date) {
     return parseInt(date.split('-')[0] + date.split('-')[1] + date.split('-')[2]);
   };
@@ -73,7 +74,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     Restangular.all('league_teams').getList().then(function(leagueTeams){
       $scope.leagueTeams = leagueTeams;
     });
-    //active model serializer embeds IDs of teams, so I have to loop through the array of IDs to save all of the teams that belong to a league
     Restangular.one('leagues', id).get().then(function(league){
       $scope.league = league;
       //This block is finding all of the unique months between the start date and end date, taking into account year transitions
@@ -82,7 +82,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       var endYear = league.end_date.split('-')[0];
       var endMonth = league.end_date.split('-')[1]-1;
       for(var i=startYear; i<=endYear; i++){
-        console.log("year " + i);
         for(var j=0; j<12; j++){
           if(startYear==endYear){
             if(j>=startMonth && j<=endMonth){
@@ -97,8 +96,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
             }
             else if(endYear>i && i>startYear){
               $scope.leagueMonths.push([months[j], i]);
-              console.log($scope.leagueMonths);
-              console.log(months[j], i);
             }
             else if(j<=endMonth && i==endYear){
               $scope.leagueMonths.push([months[j], i]);
@@ -256,6 +253,9 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   var StatNewCtrl = function ($scope, $modalInstance, game, player) {
     $scope.player = player;
     $scope.stat = {};
+    $scope.clearErrors = function() {
+      $scope.errors = null;
+    };
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
@@ -340,6 +340,10 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
         }
       }
     });
+  };
+
+  $scope.clearErrors = function() {
+    $scope.errors = null;
   };
 
 }]);

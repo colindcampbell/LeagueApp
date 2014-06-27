@@ -27,7 +27,7 @@
 
 		<div class="col-sm-4">
 			<center>
-				<h2>( Leagues with {{team.name}} )</h2>
+				<h2>( {{team.name}} ) <small>leagues</small></h2>
 				<accordion close-others="true" >
 					<accordion-group x-ng-repeat="league in teamLeagues | orderBy:'start_date'" style="margin-top:0px;">		
 						<accordion-heading>

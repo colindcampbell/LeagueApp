@@ -4,6 +4,14 @@
     <h4 class="modal-title">( New ) <small> Stats for {{player.first_name}} {{player.last_name}}</small></h4>
 	</div>
 	<div class="modal-body">
+		<div ng-show="errors" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" ng-click="clearErrors();" aria-hidden="true">&times;</button>
+      <ul>
+        <li ng-repeat="(attribute, error) in errors">
+          {{attribute}} {{error.join(", ")}}
+        </li>
+      </ul>
+    </div>
 		<form ng-submit="saveStat();" class="form-horizontal">
 			<div class="form-group">
 			  <label for="points" class='col-sm-6 control-label'>Points:</label>
