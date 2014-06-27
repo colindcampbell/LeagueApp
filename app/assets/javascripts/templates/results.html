@@ -43,7 +43,8 @@
 
 	<div class="col-sm-7">
 
-		<h2 id="playerStats">Stats</h2>
+		<h4 x-ng-if="statTeam" style="color:white">Stats for ( {{statTeam.name}} ) on ( {{statGame.date | date:'EEEE, MMM dd'}} )</h4>
+		<h4 x-ng-if="!statTeam" style="color:white" >Stats for ( team ) on ( date )</h4>
 		<table class="table table-striped" style="background-color:white; border-radius:10px;" x-ng-repeat="player in gamePlayers | orderBy:'last_name'">
 			<tbody>
 			<tr>

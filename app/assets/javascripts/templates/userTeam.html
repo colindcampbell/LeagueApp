@@ -5,14 +5,14 @@
 			<center>
 				<h2>( Players )</h2>
 				<accordion close-others="true" >
-					<accordion-group x-ng-repeat="player in team.players | orderBy:'last_name'" style="margin-top:0px;">		
+					<accordion-group x-ng-repeat="player in team.players | orderBy:'last_name'" style="margin-top:0px;">
 						<accordion-heading>
 							<h4 style="margin: 0 auto 0 auto;">{{player.last_name}}, {{player.first_name}} <small>#{{player.number}}</small></h4>
 						</accordion-heading>
 						<div>
-							<h5><i>Position:</i> {{player.position}} </h5>
-							<h5><i>Height:</i> {{player.height}} </h5>
-							<h5><i>Weight:</i> {{player.weight}} lbs. </h5>
+							<h5><i>Position:</i> {{player.position}}</h5>
+							<h5><i>Height:</i> {{player.height}}</h5>
+							<h5><i>Weight:</i> {{player.weight}} lbs.</h5>
 							<!-- Put Stat Averages Here -->
 							<div x-ng-if="user.id == team.user_id">
 								<div class="btn btn-warning" ng-click="editPlayer(player);"><span class="glyphicon glyphicon-edit"></span> Player</div>
@@ -27,9 +27,9 @@
 
 		<div class="col-sm-4">
 			<center>
-				<h2>( {{team.name}} ) <small>leagues</small></h2>
+				<h2>( {{team.name}} ) <br><small>leagues</small></h2>
 				<accordion close-others="true" >
-					<accordion-group x-ng-repeat="league in teamLeagues | orderBy:'start_date'" style="margin-top:0px;">		
+					<accordion-group x-ng-repeat="league in teamLeagues | orderBy:'start_date'" style="margin-top:0px;">
 						<accordion-heading>
 							<h4 style="margin: 0 auto 0 auto;">{{league.name}}</h4>
 						</accordion-heading>
