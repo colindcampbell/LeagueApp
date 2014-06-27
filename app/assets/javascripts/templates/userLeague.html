@@ -5,7 +5,9 @@
 			<h2>( Schedule )</h2>
 			<accordion close-others="true">
 				<!-- month[1] is the year in the date -->
-				<accordion-group x-ng-repeat="month in leagueMonths" x-ng-if="month[0].number >= currentMonth" style="margin-top:0px;">
+				<accordion-group x-ng-repeat="month in leagueMonths" 
+				x-ng-if="(month[1]==currentYear && month[0].number >= currentMonth) || month[1]>currentYear" 
+				style="margin-top:0px;">
 					<accordion-heading>
 						<h3 style="margin: 0 auto 0 auto;">{{month[0].name}} <small>{{month[1]}}</small></h3>
 					</accordion-heading>

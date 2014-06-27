@@ -58,6 +58,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     var month = (today.getMonth()+1).toString();
     var year = (today.getFullYear()).toString();
     $scope.currentMonth = month;
+    $scope.currentYear = year;
     $scope.dateToday = parseInt(year+('0' + month).slice(-2)+('0' + day).slice(-2));
     $scope.day.date = today;
   };
@@ -80,23 +81,28 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       var startMonth = league.start_date.split('-')[1]-1;
       var endYear = league.end_date.split('-')[0];
       var endMonth = league.end_date.split('-')[1]-1;
-      for(i=startYear; i<=endYear; i++){
-        for(j=0; j<12; j++){
+      for(var i=startYear; i<=endYear; i++){
+        console.log("year " + i);
+        for(var j=0; j<12; j++){
           if(startYear==endYear){
             if(j>=startMonth && j<=endMonth){
               //months[j] = current month in the loop, i = current year in the loop
               $scope.leagueMonths.push([months[j], i]);
             }
           }
-          //if the start year and end year are different, add month after the start month in the first year and month before the end month in the last year. Add all of the months for years in between if the league persists over several years
-          else if(j>=startMonth && i==startYear){
-            $scope.leagueMonths.push([months[j], i]);
-          }
-          else if(endYear>i>startYear){
-            $scope.leagueMonths.push([months[j], i]);
-          }
-          else if(j<=endMonth && i==endYear){
-            $scope.leagueMonths.push([months[j], i]);
+          //if the start year and end year are different, add months after the start month in the first year and months before the end month in the last year. Add all of the months for years in between if the league persists over several years
+          else{
+            if(j>=startMonth && i==startYear){
+              $scope.leagueMonths.push([months[j], i]);
+            }
+            else if(endYear>i && i>startYear){
+              $scope.leagueMonths.push([months[j], i]);
+              console.log($scope.leagueMonths);
+              console.log(months[j], i);
+            }
+            else if(j<=endMonth && i==endYear){
+              $scope.leagueMonths.push([months[j], i]);
+            }
           }
         }
       }
