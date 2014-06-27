@@ -169,7 +169,10 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   //New Day Modal Controller
   var GameNewCtrl = function ($scope, $modalInstance, league, day, dayIndex) {
     $scope.day = day;
-    $scope.game = {};
+    $scope.game = {time: new Date()};
+    $scope.game.time.setHours( 12 );
+    $scope.game.time.setMinutes( 0 );
+    $scope.mstep = 5;
     $scope.game.league_id = league.id;
     $scope.game.day_id = day.id;
     $scope.game.date = day.date;
@@ -226,6 +229,14 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
           $scope.errors = errors.data;
         });
     };
+  };
+
+  //'Restangularizing' an element gives it restful actions. Day index is needed to be able to remove the game from the scope in the correct day.
+  $scope.deleteGame = function(game) {
+    Restangular.restangularizeElement(null, game, 'games');
+    game.remove().then(function(updatedDays) {
+      $scope.league.days = updatedDays;
+    });
   };
 
   $scope.setStats = function(players, game, team) {

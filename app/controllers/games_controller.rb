@@ -53,10 +53,11 @@ class GamesController < ApplicationController
 
   # DELETE /games/1
   def destroy
+    @days = Day.where(league_id: @game.league_id);
     @game.destroy
     respond_to do |format|
       format.html { redirect_to root_path, notice: 'Game was successfully destroyed.'}
-      format.json { render json: { head: :ok } }
+      format.json { render json: @days }
     end
   end
 

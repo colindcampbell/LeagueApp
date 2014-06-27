@@ -15,7 +15,7 @@
 						<accordion-group heading="{{day.date | date:'EEEE, MMM dd'}}" style="margin-top:0px;" x-ng-repeat="day in league.days | orderBy:'date'"	x-ng-if="month[0].number == day.date.split('-')[1] && 
 						month[1] == day.date.split('-')[0] &&
 						dayInt(day.date) >= dateToday">
-							<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">
+							<div x-ng-repeat="game in day.games | orderBy:'time'" x-ng-if="game.day_id == day.id">
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.home_team_id == team.id">
 									<h4>( {{game.home_score}} ) {{team.name}}</h4>
 								</div>
@@ -27,6 +27,7 @@
 								<div x-ng-if="game.half && !game.final"><i>Halftime</i></div>
 								<div x-ng-if="game.final"><i>Final Score</i></div>
 								<div class="btn btn-warning btn-sm" ng-click="editGame(game, league);" x-ng-if="league.user_id == user.id">Update Game</div>
+								<div class="btn btn-danger btn-sm" ng-click="deleteGame(game);" x-ng-if="league.user_id == user.id">Delete Game</div>
 								<hr>
 							</div>
 							<div x-ng-if="league.user_id == user.id">
