@@ -12,8 +12,8 @@
         </span>
         <div id="<%=l.id%>" class="collapse out" style="background-color:white;border-radius:3px;">
           <br>
-          <div>Start Date: <%= l.start_date %></div>
-          <div>End Date: <%= l.end_date %></div>
+          <div>Start Date: <%= l.start_date.strftime("%A, %b %d %Y") %></div>
+          <div>End Date: <%= l.end_date.strftime("%A, %b %d %Y") %></div>
           <div>Locations: <%= l.locations %></div>
           <div>Description: <%= l.description %></div>
           <%= link_to "View", league_path(l), class: 'btn btn-info', id: 'leagueList' %>

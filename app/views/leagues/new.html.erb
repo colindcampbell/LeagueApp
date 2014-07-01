@@ -42,7 +42,12 @@
 			<div class='form-group'>
 				<label for="league-sport" class='col-sm-3 control-label'>Sport</label>
 				<div class='col-sm-9'>
-					<%= l.select :sport, [['Basketball','Basketball'],['Football', 'Football']], :class => 'form-control', :id => 'league-sport', :placeholder => 'Basketball or Football' %>
+					<%= l.select :sport, 
+					[
+						['Basketball','Basketball'],
+						['Football', 'Football'],
+						['Softball','Softball']
+					], :class => 'form-control', :id => 'league-sport', :placeholder => 'Basketball or Football' %>
 				</div>
 			</div>
 			<div class='form-group'>

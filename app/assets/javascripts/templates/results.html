@@ -13,13 +13,13 @@
 						<accordion-group heading="{{day.date | date:'EEEE, MMM dd' }}" style="margin-top:0px;" x-ng-repeat="day in league.days | orderBy:'date'"	x-ng-if="month[0].number == day.date.split('-')[1] && month[1] == day.date.split('-')[0] && dateToday > dayInt(day.date)">
 							<div x-ng-repeat="game in day.games" x-ng-if="game.day_id == day.id">
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.home_team_id == team.id">
-									<h4>( {{game.home_score}} ) {{team.name}} 
+									<h4>( {{game.home_score}} ) <a href="/teams/{{team.id}}">{{team.name}}</a>
 										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game, team)">Stats</span>
 									</h4>
 								</div>
 								-vs-
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.away_team_id == team.id">
-									<h4>( {{game.away_score}} ) {{team.name}} 
+									<h4>( {{game.away_score}} ) <a href="/teams/{{team.id}}">{{team.name}}</a>
 										<span class="btn btn-xs btn-info" x-ng-click="setStats(team.players, game, team)">Stats</span>
 									</h4>
 								</div>
