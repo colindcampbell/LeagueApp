@@ -1,13 +1,9 @@
 
-
-
-<div class="col-sm-4 col-sm-offset-2" id="league_signup">
-
+<div class="col-sm-8 col-sm-offset-2">
   <%= form_for @user, class: 'form-horizontal' do |f| %>
     <% if @user.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited you from creating an account:</h2>
         <ul>
         <% @user.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -15,8 +11,35 @@
         </ul>
       </div>
     <% end %>
+  <% end %>
+</div>
 
-    <h2>Run Leagues</h2>
+<div class="col-sm-4 col-sm-offset-2" id="league_signup">
+
+  
+  <h2>Search for Leagues</h2>
+    <center>
+    <input type="text" class="form-control" ng-model="leagueSearch" placeholder="Search for Leagues on RecStar">
+    <accordion close-others="true" >
+      <accordion-group x-ng-repeat="league in leagues | filter:leagueSearch" x-ng-if="leagueSearch" style="margin-top:0px;">
+        <accordion-heading>
+          <h4 style="margin: 0 auto 0 auto;">{{league.name}}</h4>
+        </accordion-heading>
+        <div>
+          <h5><i>Start Date:</i><strong> {{league.start_date | date:('fullDate')}} </strong></h5>
+          <h5><i>End Date:</i><strong> {{league.end_date | date:('fullDate')}} </strong></h5>
+          <h5><i>Sport:</i><strong> {{league.sport}} </strong></h5>
+          <h5><i>Locations:</i><strong> {{league.locations}}</strong></h5>
+          <h5><i>Description:</i><strong> {{league.description}}</strong></h5>
+          <a href="/leagues/{{league.id}}" class="btn btn-primary">League Site</a>
+        </div>
+      </accordion-group>
+    </accordion>
+  </center>
+  <hr>
+  <h2>Run Leagues</h2>
+  <p style="color:#ccc">Fill out this form if you would like to create leagues for teams in your area to find and join.</p>
+  <%= form_for @user, class: 'form-horizontal'  do |f| %>
     <div class="actions">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
@@ -24,18 +47,35 @@
       <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "league_admin" %><br>
-      <%= f.submit "Sign Up", class: "btn btn-info"%>
+      <span><%= f.submit "Sign Up", class: "btn btn-info" %></span>
     </div>
-
   <% end %>
-
 </div>
 
 <div class="col-sm-4" id="team_signup">
 
-  <%= form_for @user, class: 'form-horizontal'  do |f| %>
+  <h2 style="text-align:right">Search for Teams</h2>
+    <center>
+    <input type="text" class="form-control" ng-model="teamSearch" placeholder="Search for Teams on RecStar">
+    <accordion close-others="true" >
+      <accordion-group x-ng-repeat="team in teams | filter:teamSearch" x-ng-if="teamSearch" style="margin-top:0px;">
+        <accordion-heading>
+          <h4 style="margin: 0 auto 0 auto;">{{team.name}}</h4>
+        </accordion-heading>
+        <div>
+          <h5><i>Home City:</i><strong> {{team.home_city}} </strong></h5>
+          <h5><i>End Date:</i><strong> {{team.mascot}} </strong></h5>
+          <a href="/teams/{{team.id}}" class="btn btn-primary">Team Site</a>
+        </div>
+      </accordion-group>
+    </accordion>
+  </center>
+  <hr>
 
-    <h2 style="text-align:right">Run Teams</h2>
+
+  <h2 style="text-align:right">Run Teams</h2>
+  <p style="color:#ccc;text-align:right">Fill out this form if you would like to create a team and find leagues to join in your area.</p>
+  <%= form_for @user, class: 'form-horizontal'  do |f| %>
     <div class="actions">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
@@ -45,10 +85,11 @@
       <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
       <span style="float:right"><%= f.submit "Sign Up", class: "btn btn-info" %></span>
     </div>
-
   <% end %>
+  <br>
+  <br>
+  <br>
 </div>
 
-<div class="col-sm-2">
-  </div>
+
 

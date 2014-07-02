@@ -7,7 +7,9 @@ LeagueApp::Application.routes.draw do
   end
   resources :days
   resources :games
-  resources :teams
+  resources :teams do
+    get 'allTeams', on: :collection
+  end
   resources :users
   resources :stats
   resources :teams
@@ -17,7 +19,6 @@ LeagueApp::Application.routes.draw do
   resources :league_teams 
   resources :team_leagues, only: :index
   
-
   root 'users#new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

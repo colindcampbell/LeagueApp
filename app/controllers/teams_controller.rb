@@ -3,7 +3,10 @@ class TeamsController < ApplicationController
   before_action :authenticate_user, only: [:index, :new, :edit, :create, :update, :delete]
   respond_to :html, :json
 
- 
+  def allTeams
+    @teams = Team.all
+    respond_with @teams
+  end
   
   # GET /teams
   def index
