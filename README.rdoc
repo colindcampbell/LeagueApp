@@ -3,14 +3,15 @@
 Recstar is an app to connect recreation league administrators with teams that might be interested in joining their leagues. A user can sign up as a team owner or league administrator. Teams owners add players then search for and join leagues, while league admins accept teams and create games and stats for each league they create.
 
 This App uses:
-Ruby 2.0
-Rails 4.0.4
-AngularJS
-Angular UI Router
-Angular UI Bootstrap
-Restangular for restful API interaction with the backend
-Active Model Serializer with json serialization of data
-Bcrypt for user authentication
+Ruby 2.0,
+Rails 4.0.4,
+AngularJS,
+Angular UI Router,
+Angular UI Bootstrap,
+Restangular for restful API interaction with the backend,
+Active Model Serializer with json serialization of data,
+PostgreSQL database,
+and Bcrypt for user authentication
 
 Please check Gemfile and Gemfile lock for versions
 
