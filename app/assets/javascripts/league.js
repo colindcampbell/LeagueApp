@@ -188,7 +188,6 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
         league.days.sort(function(a,b){
           return parseInt(a.date.split('-')[0] + a.date.split('-')[1] + a.date.split('-')[2]) - parseInt(b.date.split('-')[0] + b.date.split('-')[1] + b.date.split('-')[2]);
         })[dayIndex].games.push(game);
-
         $modalInstance.dismiss('cancel');
         $scope.game = {};
       }, function(errors) {

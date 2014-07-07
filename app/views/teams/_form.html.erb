@@ -1,26 +1,28 @@
 <div class="container-fluid">
   <div class="row">
-    <%= form_for @team, class: 'form-horizontal' do |f| %>
-      <% if @team.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:</h2>
+    <div class="col-sm-8 col-sm-offset-2">
+      <%= form_for @team, class: 'form-horizontal' do |f| %>
+        <% if @team.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@team.errors.count, "error") %> prohibited this team from being saved:</h2>
 
-          <ul>
-          <% @team.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-          </ul>
+            <ul>
+            <% @team.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="actions">
+          <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
+          <%= f.text_field :home_city, class: 'form-control', placeholder: 'Home City' %><br>
+          <%= f.text_field :mascot, class: 'form-control', placeholder: 'Mascot' %><br>
+          <%= f.hidden_field :wins, value: 0 %>
+          <%= f.hidden_field :losses, value: 0 %>
+          <%= f.submit "Add Team", class: "btn btn-info"%><br>
         </div>
       <% end %>
-
-      <div class="actions">
-        <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
-        <%= f.text_field :home_city, class: 'form-control', placeholder: 'Home City' %><br>
-        <%= f.text_field :mascot, class: 'form-control', placeholder: 'Mascot' %><br>
-        <%= f.hidden_field :wins, value: 0 %>
-        <%= f.hidden_field :losses, value: 0 %>
-        <%= f.submit "Add Team", class: "btn btn-info"%><br>
-      </div>
-    <% end %>
+    </div>
   </div>
 </div>
