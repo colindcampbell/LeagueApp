@@ -6,7 +6,7 @@
   <div class="col-sm-6">
     <center>
       <h1>Your Leagues</h1>
-      <% League.where(:user_id => current_user.id).each do |l| %>
+      <% League.where(:user_id => current_user.id).sort{|dt| dt.start_date}.reverse.each do |l| %>
         <span class="btn btn-default btn-block" data-toggle="collapse" data-target="#<%=l.id%>">
           <div><h4><%= l.name %> <small><%=l.sport%></small></h4></div>
         </span>
