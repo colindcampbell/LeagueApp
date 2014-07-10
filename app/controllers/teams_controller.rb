@@ -36,6 +36,9 @@ class TeamsController < ApplicationController
   def create
     @team = Team.new(team_params)
     @team.user = current_user
+    @team.coach = current_user.name
+    @team.email = current_user.email
+    @team.phone = current_user.phone
 
     if @team.save
       redirect_to current_user.teams.first, notice: 'Team was successfully created.'
@@ -67,6 +70,6 @@ class TeamsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def team_params
-      params.require(:team).permit(:name, :home_city, :mascot, :wins, :losses)
+      params.require(:team).permit(:name, :home_city, :mascot, :wins, :losses, :coach, :email, :phone)
     end
 end
