@@ -6,7 +6,7 @@
         <h2><%= pluralize(@user.errors.count, "error") %> prohibited you from creating an account:</h2>
         <ul>
         <% @user.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+          <li style="color:white"><%= msg %></li>
         <% end %>
         </ul>
       </div>
@@ -63,6 +63,9 @@
           <h4 style="margin: 0 auto 0 auto;">{{team.name}}</h4>
         </accordion-heading>
         <div>
+          <h5><i>Coach:</i><strong> {{team.coach}} </strong></h5>
+          <h5><i>Email:</i><strong> {{team.email}} </strong></h5>
+          <h5><i>Phone:</i><strong> {{team.phone}} </strong></h5>
           <h5><i>Home City:</i><strong> {{team.home_city}} </strong></h5>
           <h5><i>Mascot:</i><strong> {{team.mascot}} </strong></h5>
           <a href="/teams/{{team.id}}" class="btn btn-primary">Team Site</a>
