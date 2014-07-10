@@ -44,7 +44,7 @@
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
       <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
-      <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password (minimum 6 characters)'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "league_admin" %><br>
       <span><%= f.submit "Sign Up", class: "btn btn-info" %></span>
@@ -80,7 +80,7 @@
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
       <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
       <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
-      <%= f.password_field :password, class: 'form-control', placeholder: 'Password'%><br>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password (minimum 6 characters)'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
       <span style="float:right"><%= f.submit "Sign Up", class: "btn btn-info" %></span>
