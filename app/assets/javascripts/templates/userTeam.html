@@ -1,5 +1,15 @@
 <div class="container-fluid" x-ng-controller="TeamsCtrl">
 	<div class="row">
+		<div ng-show="errors" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" ng-click="clearErrors();" aria-hidden="true">&times;</button>
+      <ul>
+        <li ng-repeat="(attribute, error) in errors">
+          {{attribute}} {{error.join(", ")}}
+        </li>
+      </ul>
+    </div>
+	</div>
+	<div class="row">
 
 		<div class="col-sm-4">
 			<center>

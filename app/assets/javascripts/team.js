@@ -119,7 +119,13 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
     newLeagueTeam.place = null;
     Restangular.all('league_teams').post(newLeagueTeam).then(function(){
       $scope.teamLeagues.push(league);
-    });
+    }, function(errors) {
+          $scope.errors = errors.data;
+        });
+  };
+
+  $scope.clearErrors = function() {
+    $scope.errors = null;
   };
   
 }]);

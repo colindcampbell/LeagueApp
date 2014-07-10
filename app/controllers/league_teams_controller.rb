@@ -27,7 +27,10 @@ class LeagueTeamsController < ApplicationController
     if @league_team.save
       redirect_to leagues_path, notice: 'You have joined a new league.'
     else
-      render action: 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @league_team.errors, status: :unprocessable_entity }
+      end
     end
   end
 
