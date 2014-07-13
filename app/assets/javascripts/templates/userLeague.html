@@ -54,7 +54,7 @@
 		<div class="col-sm-6">
 			<h2>( Standings )</h2>
 			<accordion close-others="true">
-				<accordion-group x-ng-repeat="team in league.teams | orderBy:'name'" style="margin-top:0px;">
+				<accordion-group x-ng-repeat="team in league.teams" style="margin-top:0px;">
 					<accordion-heading>
 						<h4 style="margin: 0 auto 0 auto;">{{team.name}} 
 							<small x-ng-repeat="lt in leagueTeams" x-ng-if="lt.league_id == league.id && lt.team_id == team.id">( {{lt.wins}} - {{lt.losses}} )</small>
