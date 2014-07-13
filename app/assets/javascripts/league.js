@@ -354,6 +354,8 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     //get league_team for this league and team, then restangularize so that it can be deleted
     Restangular.one('league_teams').get({league_id: league.id, team_id: team.id}).then(function(leagueTeam){
       var leagueTeamDestroy = Restangular.restangularizeElement(null, leagueTeam[0], 'league_teams');
+      console.log(team);
+      console.log(leagueTeamDestroy);
       leagueTeamDestroy.remove().then(function(){
         $scope.league.teams = _.without($scope.league.teams, team);
       });

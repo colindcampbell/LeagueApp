@@ -4,7 +4,9 @@ class LeagueTeamsController < ApplicationController
   respond_to :html, :json
 
   def index
-    if params[:league_id]
+    if params[:league_id] && params[:team_id]
+      @league_teams = LeagueTeam.where(league_id: params[:league_id], team_id: params[:team_id])
+    elsif params[:league_id]
       @league_teams = LeagueTeam.where(league_id: params[:league_id])
     else
       @league_teams = LeagueTeam.all
@@ -14,7 +16,6 @@ class LeagueTeamsController < ApplicationController
 
   # GET /league_teams/1
   def show
-    @league_team = LeagueTeam.where(league_id: params[:league_id], team_id: params[:team_id]) if params[:league_id] && params[:team_id]
     respond_with @league_team
   end
 
