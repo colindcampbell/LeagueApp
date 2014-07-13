@@ -1,4 +1,3 @@
-
 <div class="col-sm-8 col-sm-offset-2">
   <%= form_for @user, class: 'form-horizontal' do |f| %>
     <% if @user.errors.any? %>
@@ -14,10 +13,43 @@
   <% end %>
 </div>
 
-<div class="col-sm-4 col-sm-offset-2" id="league_signup">
+<div class="col-sm-4 col-sm-offset-2" id="team_signup">
+  <h2>Search for Teams</h2>
+    <center>
+    <input type="text" class="form-control" ng-model="teamSearch" placeholder="Search for Teams on RecStar">
+    <accordion close-others="true" >
+      <accordion-group x-ng-repeat="team in teams | filter:teamSearch" x-ng-if="teamSearch" style="margin-top:0px;">
+        <accordion-heading>
+          <h4 style="margin: 0 auto 0 auto;">{{team.name}}</h4>
+        </accordion-heading>
+        <div>
+          <h5><i>Coach:</i><strong> {{team.coach}} </strong></h5>
+          <h5><i>Home City:</i><strong> {{team.home_city}} </strong></h5>
+          <h5><i>Mascot:</i><strong> {{team.mascot}} </strong></h5>
+          <a href="/teams/{{team.id}}" class="btn btn-primary">Team Site</a>
+        </div>
+      </accordion-group>
+    </accordion>
+  </center>
+  <hr>
+  <h2>Run a Team</h2>
+  <p style="color:#ccc">Fill out this form if you would like to create a team and find leagues to join in your area.</p>
+  <%= form_for @user, class: 'form-horizontal'  do |f| %>
+    <div class="actions">
+      <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
+      <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
+      <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password (minimum 6 characters)'%><br>
+      <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
+      <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
+      <span><%= f.submit "Sign Up", class: "btn btn-info" %></span>
+    </div>
+  <% end %>
+</div>
 
+<div class="col-sm-4" id="league_signup">
   
-  <h2>Search for Leagues</h2>
+  <h2  style="text-align:right">Search for Leagues</h2>
     <center>
     <input type="text" class="form-control" ng-model="leagueSearch" placeholder="Search for Leagues on RecStar">
     <accordion close-others="true" >
@@ -37,8 +69,8 @@
     </accordion>
   </center>
   <hr>
-  <h2>Run Leagues</h2>
-  <p style="color:#ccc">Fill out this form if you would like to create leagues for teams in your area to find and join.</p>
+  <h2 style="text-align:right">Run Leagues</h2>
+  <p style="color:#ccc;text-align:right">Fill out this form if you would like to create leagues for teams in your area to find and join.</p>
   <%= form_for @user, class: 'form-horizontal'  do |f| %>
     <div class="actions">
       <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
@@ -47,45 +79,6 @@
       <%= f.password_field :password, class: 'form-control', placeholder: 'Password (minimum 6 characters)'%><br>
       <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
       <%= f.hidden_field :user_type, class: 'form-control', value: "league_admin" %><br>
-      <span><%= f.submit "Sign Up", class: "btn btn-info" %></span>
-    </div>
-  <% end %>
-</div>
-
-<div class="col-sm-4" id="team_signup">
-
-  <h2 style="text-align:right">Search for Teams</h2>
-    <center>
-    <input type="text" class="form-control" ng-model="teamSearch" placeholder="Search for Teams on RecStar">
-    <accordion close-others="true" >
-      <accordion-group x-ng-repeat="team in teams | filter:teamSearch" x-ng-if="teamSearch" style="margin-top:0px;">
-        <accordion-heading>
-          <h4 style="margin: 0 auto 0 auto;">{{team.name}}</h4>
-        </accordion-heading>
-        <div>
-          <h5><i>Coach:</i><strong> {{team.coach}} </strong></h5>
-          <h5><i>Email:</i><strong> {{team.email}} </strong></h5>
-          <h5><i>Phone:</i><strong> {{team.phone}} </strong></h5>
-          <h5><i>Home City:</i><strong> {{team.home_city}} </strong></h5>
-          <h5><i>Mascot:</i><strong> {{team.mascot}} </strong></h5>
-          <a href="/teams/{{team.id}}" class="btn btn-primary">Team Site</a>
-        </div>
-      </accordion-group>
-    </accordion>
-  </center>
-  <hr>
-
-
-  <h2 style="text-align:right">Run Teams</h2>
-  <p style="color:#ccc;text-align:right">Fill out this form if you would like to create a team and find leagues to join in your area.</p>
-  <%= form_for @user, class: 'form-horizontal'  do |f| %>
-    <div class="actions">
-      <%= f.text_field :name, class: 'form-control', placeholder: 'Name' %><br>
-      <%= f.text_field :email, class: 'form-control', placeholder: 'Email' %><br>
-      <%= f.phone_field :phone, class: 'form-control', placeholder: 'Phone' %><br>
-      <%= f.password_field :password, class: 'form-control', placeholder: 'Password (minimum 6 characters)'%><br>
-      <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password'%>
-      <%= f.hidden_field :user_type, class: 'form-control', value: "team_owner" %><br>
       <span style="float:right"><%= f.submit "Sign Up", class: "btn btn-info" %></span>
     </div>
   <% end %>

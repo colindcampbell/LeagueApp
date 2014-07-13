@@ -13,6 +13,27 @@
 
 		<div class="col-sm-4">
 			<center>
+				<h2>( {{team.name}} ) <br><small>leagues</small></h2>
+				<accordion close-others="true" >
+					<accordion-group x-ng-repeat="league in teamLeagues | orderBy:'start_date'" style="margin-top:0px;">
+						<accordion-heading>
+							<h4 style="margin: 0 auto 0 auto;">{{league.name}}</h4>
+						</accordion-heading>
+						<div>
+							<h5><i>Start Date:</i><strong> {{league.start_date | date:('fullDate')}} </strong></h5>
+							<h5><i>End Date:</i><strong> {{league.end_date | date:('fullDate')}} </strong></h5>
+							<h5><i>Sport:</i><strong> {{league.sport}} </strong></h5>
+							<h5><i>Locations:</i><strong> {{league.locations}}</strong></h5>
+							<h5><i>Description:</i><strong> {{league.description}}</strong></h5>
+							<a href="/leagues/{{league.id}}" class="btn btn-primary">League Site</a>
+						</div>
+					</accordion-group>
+				</accordion>
+			</center>
+		</div>
+
+		<div class="col-sm-4">
+			<center>
 				<h2>( Players )</h2>
 				<accordion close-others="true" >
 					<accordion-group x-ng-repeat="player in team.players | orderBy:'last_name'" style="margin-top:0px;">
@@ -33,27 +54,6 @@
 					<div x-ng-if="user.id == team.user_id" class="btn btn-default btn-block" ng-click="newPlayer(team.players)">+ Player to {{team.name}}</div>
 				</accordion>
 			</center> 
-		</div>
-
-		<div class="col-sm-4">
-			<center>
-				<h2>( {{team.name}} ) <br><small>leagues</small></h2>
-				<accordion close-others="true" >
-					<accordion-group x-ng-repeat="league in teamLeagues | orderBy:'start_date'" style="margin-top:0px;">
-						<accordion-heading>
-							<h4 style="margin: 0 auto 0 auto;">{{league.name}}</h4>
-						</accordion-heading>
-						<div>
-							<h5><i>Start Date:</i><strong> {{league.start_date | date:('fullDate')}} </strong></h5>
-							<h5><i>End Date:</i><strong> {{league.end_date | date:('fullDate')}} </strong></h5>
-							<h5><i>Sport:</i><strong> {{league.sport}} </strong></h5>
-							<h5><i>Locations:</i><strong> {{league.locations}}</strong></h5>
-							<h5><i>Description:</i><strong> {{league.description}}</strong></h5>
-							<a href="/leagues/{{league.id}}" class="btn btn-primary">League Site</a>
-						</div>
-					</accordion-group>
-				</accordion>
-			</center>
 		</div>
 
 		<div class="col-sm-4">
