@@ -224,8 +224,8 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       $scope.homeLeagueTeam = {};
       $scope.awayLeagueTeam = {};
       //Update the home team
-      Restangular.one('league_teams', game.home_league_team_id).get().then(function(data){
-        $scope.homeLeagueTeam = data;
+      Restangular.one('league_teams', game.home_league_team_id).get().then(function(home_data){
+        $scope.homeLeagueTeam = home_data;
         if(game.final && !game.recorded){
           if(game.home_score > game.away_score){
             $scope.homeLeagueTeam.wins ++;
@@ -235,27 +235,27 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
           }
           $scope.homeLeagueTeam.put();
         }
-      });
-      //Update the away team wins/losses then post the updated game with recorded now being true
-      Restangular.one('league_teams', game.away_league_team_id).get().then(function(data){
-        $scope.awayLeagueTeam = data;
-        if(game.final && !game.recorded){
-          if(game.home_score < game.away_score){
-            $scope.awayLeagueTeam.wins ++;
+        //Update the away team wins/losses then post the updated game with recorded now being true
+        Restangular.one('league_teams', game.away_league_team_id).get().then(function(away_data){
+          $scope.awayLeagueTeam = away_data;
+          if(game.final && !game.recorded){
+            if(game.home_score < game.away_score){
+              $scope.awayLeagueTeam.wins ++;
+            }
+            else{
+              $scope.awayLeagueTeam.losses ++;
+            }
+            $scope.awayLeagueTeam.put();
           }
-          else{
-            $scope.awayLeagueTeam.losses ++;
-          }
-          $scope.awayLeagueTeam.put();
-        }
-        game.recorded = true;
-        Restangular.restangularizeElement(null, game, 'games');
-        game.put().then(function(){
-          $scope.game = {};
-          $modalInstance.dismiss('cancel');
-        },
-        function(errors) {
-          $scope.errors = errors.data;
+          game.recorded = true;
+          Restangular.restangularizeElement(null, game, 'games');
+          game.put().then(function(){
+            $scope.game = {};
+            $modalInstance.dismiss('cancel');
+          },
+          function(errors) {
+            $scope.errors = errors.data;
+          });
         });
       });
     };
@@ -365,7 +365,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     $scope.errors = null;
   };
 
-  
+
   // Determining the win percentage of each team for standings sort
   // $scope.winPercent = function(team, league) {
   //   console.log(team);
