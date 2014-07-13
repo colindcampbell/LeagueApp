@@ -1,4 +1,3 @@
-
 var teamApp = angular.module('teamapp', ['ngResource', 'ui.router', 'templates', 'restangular', 'ui.bootstrap']).config(
     ['$httpProvider', function($httpProvider) {
     var authToken = angular.element("meta[name=\"csrf-token\"]").attr("content");
@@ -33,11 +32,9 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
     //Set the current team then get all of the leagues that this team belongs to through the LeagueTeam join table
     Restangular.one('teams', id).get().then(function(team){
       $scope.team = team;
-      for(i=0;i<team.league_ids.length;i++){
-        Restangular.one('leagues', team.league_ids[i]).get().then(function(league){
-          $scope.teamLeagues.push(league);
-        });
-      }
+      Restangular.all('leagues').getList({team_id:id}).then(function(leagues){
+        $scope.teamLeagues = leagues;
+      });
     });
   };
 
@@ -119,9 +116,19 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
     newLeagueTeam.place = null;
     Restangular.all('league_teams').post(newLeagueTeam).then(function(){
       $scope.teamLeagues.push(league);
+      $scope.leagues = _.without($scope.leagues, league);
     }, function(errors) {
           $scope.errors = errors.data;
         });
+  };
+
+  //Don't show the league in the list of leagues to join if this team has already joined that league
+  $scope.joined = function(team, league){
+    for(var i=0; i<team.league_ids.length; i++){
+      if(team.league_ids[i] == league.id){
+        return true;
+      }
+    }
   };
 
   $scope.clearErrors = function() {
@@ -129,5 +136,4 @@ teamApp.controller('TeamsCtrl', ['$scope', 'Restangular', '$state', '$modal', fu
   };
   
 }]);
-
 

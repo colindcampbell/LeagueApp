@@ -10,7 +10,8 @@ class LeaguesController < ApplicationController
 
   # GET /leagues
   def index
-    @leagues = current_user.leagues
+    @leagues = current_user.leagues if current_user && current_user.user_type == 'league_admin'
+    @leagues = Team.where(id: params[:team_id])[0].leagues if params[:team_id]
     respond_with @leagues
   end
 

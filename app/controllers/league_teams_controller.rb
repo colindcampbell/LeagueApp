@@ -4,12 +4,18 @@ class LeagueTeamsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @league_teams = LeagueTeam.all
+    if params[:league_id]
+      @league_teams = LeagueTeam.where(league_id: params[:league_id])
+    else
+      @league_teams = LeagueTeam.all
+    end
     respond_with @league_teams
   end
 
   # GET /league_teams/1
   def show
+    @league_team = LeagueTeam.where(league_id: params[:league_id], team_id: params[:team_id]) if params[:league_id] && params[:team_id]
+    respond_with @league_team
   end
 
   # GET /league_teams/new
@@ -25,7 +31,10 @@ class LeagueTeamsController < ApplicationController
   def create
     @league_team = LeagueTeam.new(league_team_params)
     if @league_team.save
-      redirect_to leagues_path, notice: 'You have joined a new league.'
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.json { render nothing: true, status: :no_content }
+      end
     else
       respond_to do |format|
         format.html { render 'new' }
@@ -37,9 +46,15 @@ class LeagueTeamsController < ApplicationController
   # PATCH/PUT /league_teams/1
   def update
     if @league_team.update(league_team_params)
-      redirect_to @league_team, notice: 'League team was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.json { render nothing: true, status: :no_content }
+      end
     else
-      render action: 'edit'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @league_team.errors, status: :unprocessable_entity }
+      end
     end
   end
 

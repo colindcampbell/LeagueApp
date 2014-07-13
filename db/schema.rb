@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710053901) do
+ActiveRecord::Schema.define(version: 20140712184925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 20140710053901) do
     t.string   "location"
     t.datetime "date"
     t.integer  "league_id"
+    t.integer  "home_league_team_id"
+    t.integer  "away_league_team_id"
   end
 
   add_index "games", ["day_id"], name: "index_games_on_day_id", using: :btree

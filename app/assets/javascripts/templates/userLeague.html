@@ -1,5 +1,15 @@
 <center>
 	<div class="row">
+		<div ng-show="errors" class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" ng-click="clearErrors();" aria-hidden="true">&times;</button>
+      <ul>
+        <li ng-repeat="(attribute, error) in errors">
+          {{attribute}} {{error.join(", ")}}
+        </li>
+      </ul>
+    </div>
+	</div>
+	<div class="row">
 
 		<div class="col-sm-6">
 			<h2>( Schedule )</h2>
@@ -44,7 +54,7 @@
 		<div class="col-sm-6">
 			<h2>( Standings )</h2>
 			<accordion close-others="true">
-				<accordion-group x-ng-repeat="team in league.teams | orderBy:winPercent" style="margin-top:0px;">
+				<accordion-group x-ng-repeat="team in league.teams | orderBy:'name'" style="margin-top:0px;">
 					<accordion-heading>
 						<h4 style="margin: 0 auto 0 auto;">{{team.name}} 
 							<small x-ng-repeat="lt in leagueTeams" x-ng-if="lt.league_id == league.id && lt.team_id == team.id">( {{lt.wins}} - {{lt.losses}} )</small>
@@ -83,7 +93,7 @@
 					<h5><i>Coach:</i><strong> {{team.coach}} </strong></h5>
           <h5><i>Email:</i><strong> {{team.email}} </strong></h5>
           <h5><i>Phone:</i><strong> {{team.phone}} </strong></h5>
-					<div class="btn btn-danger" x-ng-click="deleteLeagueTeam(team);" x-ng-if="league.user_id == user.id">Remove this team</div>
+					<div class="btn btn-danger" x-ng-click="deleteLeagueTeam(team,league);" x-ng-if="league.user_id == user.id">Remove this team</div>
 					<a href="/teams/{{team.id}}" class="btn btn-primary">Team Site</a>
 				</accordion-group>
 			</accordion>

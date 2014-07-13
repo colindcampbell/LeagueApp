@@ -61,7 +61,7 @@
 				<h2>( Search for Leagues )</h2>
 				<input type="text" class="form-control" ng-model="leagueSearch" placeholder="Search for Leagues on RecStar">
 				<accordion close-others="true" >
-					<accordion-group x-ng-repeat="league in leagues | filter:leagueSearch" x-ng-if="leagueSearch" style="margin-top:0px;">
+					<accordion-group x-ng-repeat="league in leagues | filter:leagueSearch" x-ng-if="leagueSearch && !joined(team,league)" style="margin-top:0px;">
 						<accordion-heading>
 							<h4 style="margin: 0 auto 0 auto;">{{league.name}}</h4>
 						</accordion-heading>

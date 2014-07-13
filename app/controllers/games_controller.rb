@@ -26,19 +26,24 @@ class GamesController < ApplicationController
   # POST /games
   def create
     @game = Game.new(game_params)
-
+    @league = @game.league
+    @game.home_league_team_id = LeagueTeam.where(team_id: @game.home_team_id, league_id: @league.id)[0].id
+    @game.away_league_team_id = LeagueTeam.where(team_id: @game.away_team_id, league_id: @league.id)[0].id
     if @game.save
       redirect_to @game, notice: 'Game was successfully created.'
     else
-      render action: 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # PATCH/PUT /games/1
   def update
-    @league = @game.league
+    # @league = @game.league
     if @game.update(game_params)
-      @game.outcome(@league.id)
+      # @game.outcome(@league.id)
       respond_to do |format|
         format.html { redirect_to root_path }
         format.json { render nothing: true, status: :no_content }
@@ -69,6 +74,6 @@ class GamesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params.require(:game).permit(:day_id, :home_team_id, :home_score, :away_team_id, :away_score, :time, :final, :half, :recorded, :location, :date, :league_id)
+      params.require(:game).permit(:day_id, :home_team_id, :home_score, :away_team_id, :away_score, :time, :final, :half, :recorded, :location, :date, :league_id, :home_league_team_id, :away_league_team_id)
     end
 end

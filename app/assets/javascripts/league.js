@@ -58,7 +58,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     var year = (today.getFullYear()).toString();
     $scope.currentMonth = month;
     $scope.currentYear = year;
-    //turning d=today's date into an int for comparison
+    //turning dateToday's date into an int for comparison to today's date
     $scope.dateToday = parseInt(year+('0' + month).slice(-2)+('0' + day).slice(-2));
     $scope.day.date = today;
   };
@@ -72,7 +72,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   //Using ng-init with embedded ruby to get the league ID then getting that league with restangular. All league information is embedded in the league object with active model serializer
   $scope.setLeague = function(id) {
     $scope.leagueID = id;
-    Restangular.all('league_teams').getList().then(function(leagueTeams){
+    Restangular.all('league_teams').getList({league_id: id}).then(function(leagueTeams){
       $scope.leagueTeams = leagueTeams;
     });
     Restangular.one('leagues', id).get().then(function(league){
@@ -178,6 +178,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     $scope.game.date = day.date;
     $scope.game.home_score = 0;
     $scope.game.away_score = 0;
+    $scope.game.recorded = false;
     $scope.league = league;
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
@@ -211,7 +212,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       }
     });
   };
-  //Edif Game Modal Controller
+  //Edit Game Modal Controller
   var GameEditCtrl = function ($scope, $modalInstance, game, league) {
     $scope.game = game;
     $scope.league = league;
@@ -219,14 +220,44 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       $modalInstance.dismiss('cancel');
     };
     $scope.updateGame = function(game){
-      //Add determine winner function
-      Restangular.restangularizeElement(null, game, 'games');
-      game.put().then(function(){
-        $scope.game = {};
-        $modalInstance.dismiss('cancel');
-      }, function(errors) {
+      //Determine winner and update wins and losses
+      $scope.homeLeagueTeam = {};
+      $scope.awayLeagueTeam = {};
+      //Update the home team
+      Restangular.one('league_teams', game.home_league_team_id).get().then(function(data){
+        $scope.homeLeagueTeam = data;
+        if(game.final && !game.recorded){
+          if(game.home_score > game.away_score){
+            $scope.homeLeagueTeam.wins ++;
+          }
+          else{
+            $scope.homeLeagueTeam.losses ++;
+          }
+          $scope.homeLeagueTeam.put();
+        }
+      });
+      //Update the away team wins/losses then post the updated game with recorded now being true
+      Restangular.one('league_teams', game.away_league_team_id).get().then(function(data){
+        $scope.awayLeagueTeam = data;
+        if(game.final && !game.recorded){
+          if(game.home_score < game.away_score){
+            $scope.awayLeagueTeam.wins ++;
+          }
+          else{
+            $scope.awayLeagueTeam.losses ++;
+          }
+          $scope.awayLeagueTeam.put();
+        }
+        game.recorded = true;
+        Restangular.restangularizeElement(null, game, 'games');
+        game.put().then(function(){
+          $scope.game = {};
+          $modalInstance.dismiss('cancel');
+        },
+        function(errors) {
           $scope.errors = errors.data;
         });
+      });
     };
   };
 
@@ -318,38 +349,14 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
   };
 
-  //Determining the win percentage of each team for standings sort
-  $scope.winPercent = function(team) {
-    if(team.wins>0 && team.losses===0){
-      return -team.wins;
-    }
-    else if(team.wins>0){
-      return -team.wins/(team.wins+team.losses);
-    }
-    else if(team.wins===0 && team.losses>0){
-      return team.losses;
-    }
-    else{
-      return 50000;
-    }
-  };
-
   //Removing teams from your league
-  $scope.deleteLeagueTeam = function(team){
-    // get all league_teams
-    Restangular.all('league_teams').getList().then(function(leagueTeams){
-      //loop through the league_teams
-      for(i=0;i<leagueTeams.length;i++){
-        var leagueTeam = leagueTeams[i];
-        //if the team and league id match, delete that league_team record
-        if((leagueTeam.team_id == team.id) && (leagueTeam.league_id == $scope.leagueID)){
-          leagueTeam.remove().then(function(){
-            //remove the team from the scope
-            $scope.league.teams = _.without($scope.league.teams, team);
-            return;
-          });
-        }
-      }
+  $scope.deleteLeagueTeam = function(team, league){
+    //get league_team for this league and team, then restangularize so that it can be deleted
+    Restangular.one('league_teams').get({league_id: league.id, team_id: team.id}).then(function(leagueTeam){
+      var leagueTeamDestroy = Restangular.restangularizeElement(null, leagueTeam[0], 'league_teams');
+      leagueTeamDestroy.remove().then(function(){
+        $scope.league.teams = _.without($scope.league.teams, team);
+      });
     });
   };
 
@@ -357,6 +364,28 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   $scope.clearErrors = function() {
     $scope.errors = null;
   };
+
+  
+  // Determining the win percentage of each team for standings sort
+  // $scope.winPercent = function(team, league) {
+  //   console.log(team);
+  //   console.log($scope.league);
+  //   Restangular.one('league_teams').get({league_id:$scope.league.id, team_id:team.id}).then(function(currentLT){
+  //     if(currentLT.wins>0 && currentLT.losses===0){
+  //       return -currentLT.wins;
+  //     }
+  //     else if(currentLT.wins>0){
+  //       return -currentLT.wins/(currentLT.wins+currentLT.losses);
+  //     }
+  //     else if(currentLT.wins===0 && currentLT.losses>0){
+  //       return currentLT.losses;
+  //     }
+  //     else{
+  //       return 50000;
+  //     }
+  //   });
+  // };
+
 
 }]);
 
