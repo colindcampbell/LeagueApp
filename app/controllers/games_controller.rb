@@ -25,6 +25,7 @@ class GamesController < ApplicationController
 
   # POST /games
   def create
+    #New game is not working on heroku, attempting ot push again
     @game = Game.new(game_params)
     @league = @game.league
     @game.home_league_team_id = LeagueTeam.where(team_id: @game.home_team_id, league_id: @league.id)[0].id
