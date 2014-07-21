@@ -34,6 +34,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
   $scope.leagueGames = [];
   $scope.currentMonth = null;
   $scope.gameAdd = true;
+  $scope.ltEdit = false;
   $scope.user = Restangular.one('users').get().$object;
   var months = [
     {number:1, name:"January"},
@@ -49,6 +50,9 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     {number:11, name:"November"},
     {number:12, name:"December"}
   ];
+  Restangular.all('teams').all('allTeams').getList().then(function(teams){
+    $scope.allTeams = teams;
+  });
 
   //setting todays date for comparison
   $scope.today = function() {
@@ -331,7 +335,7 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     });
   };
   //Edit Stat Modal Controller
-  var StatEditCtrl = function ($scope, $modalInstance, stat, player) {
+  var StatEditCtrl = function($scope, $modalInstance, stat, player) {
     $scope.player = player;
     $scope.stat = stat;
     $scope.cancel = function () {
@@ -349,22 +353,53 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
   };
 
+  // //edit league team
+  // $scope.editLeagueTeam = function(team, league){
+  //   Restangular.one('league_teams').get({league_id: league.id, team_id: team.id}).then(function(leagueTeam){
+  //     $scope.lte = leagueTeam;
+  //     console.log($scope.lte);
+  //   });
+  //   $scope.ltEdit = !$scope.ltEdit;
+  // };
+
+  // //update league team
+  // $scope.updateLeagueTeam = function(leagueTeam){
+  //   console.log(leagueTeam);
+  //   // leagueTeam.post().then(function(){
+  //   //   $scope.ltEdit = false;
+  //   // });
+  // };
+
   //Removing teams from your league
   $scope.deleteLeagueTeam = function(team, league){
     //get league_team for this league and team, then restangularize so that it can be deleted
     Restangular.one('league_teams').get({league_id: league.id, team_id: team.id}).then(function(leagueTeam){
       var leagueTeamDestroy = Restangular.restangularizeElement(null, leagueTeam[0], 'league_teams');
-      console.log(team);
-      console.log(leagueTeamDestroy);
       leagueTeamDestroy.remove().then(function(){
         $scope.league.teams = _.without($scope.league.teams, team);
       });
     });
   };
 
+
   //function to clear errors, also needs to be present in modal controllers because they have their own scope
   $scope.clearErrors = function() {
     $scope.errors = null;
+  };
+
+  //create a new LeagueTeam record to associate a team with the league sent in the params
+  $scope.saveLeagueTeam = function(team, league){
+    var newLeagueTeam = {team_id:team.id, league_id:league.id};
+    newLeagueTeam.losses = 0;
+    newLeagueTeam.wins = 0;
+    newLeagueTeam.paid = false;
+    newLeagueTeam.place = null;
+    Restangular.all('league_teams').post(newLeagueTeam).then(function(){
+      $scope.leagueTeams.push(team);
+      $scope.allTeams = _.without($scope.allTeams, team);
+    }, function(errors) {
+          $scope.errors = errors.data;
+        });
   };
 
 
