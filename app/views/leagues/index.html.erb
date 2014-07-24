@@ -1,51 +1,57 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3"></div>
 
-<div class="row">
-
-  <div class="col-sm-3"></div>
-
-  <div class="col-sm-6">
-    <center>
-      <h1>Your Leagues</h1>
-      <% League.where(:user_id => current_user.id).sort{|dt| dt.start_date}.reverse.each do |l| %>
-        <span class="btn btn-default btn-block" data-toggle="collapse" data-target="#<%=l.id%>">
-          <div><h4><%= l.name %> <small><%=l.sport%></small></h4></div>
-        </span>
-        <div id="<%=l.id%>" class="collapse out" style="background-color:white;border-radius:3px;">
-          <br>
-          <div>Start Date: <%= l.start_date.strftime("%A, %b %d %Y") %></div>
-          <div>End Date: <%= l.end_date.strftime("%A, %b %d %Y") %></div>
-          <div>Locations: <%= l.locations %></div>
-          <div>Description: <%= l.description %></div>
-          <hr>
-          <%= link_to "View", league_path(l), class: 'btn btn-info', id: 'leagueList' %>
-          <div class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-remote="<%= edit_league_path(l.id) %> #edit_league_modal">Edit</div>
-          <%= link_to "Delete", l, method: :delete, class: "btn btn-danger", data: {confirm: "Are you sure you want to delete #{l.name}"}%>
-          <br>
-          <br>
+    <div class="col-sm-6">
+      <center>
+        <h1>Your Leagues</h1>
+        <div class="panel-group" id="accordion" style="margin:0px;">
+          <% League.where(:user_id => current_user.id).sort{|dt| dt.start_date}.reverse.each do |l| %>
+          <div class="panel panel-default" style="margin:0px;">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#<%=l.id%>">
+                  <h4><%= l.name %> <small><%=l.sport%></small></h4>
+                </a>
+              </h4>
+            </div>
+            <div id="<%=l.id%>" class="panel-collapse collapse out">
+              <div class="panel-body">
+                <div><i>Start Date:</i> <strong><%= l.start_date.strftime("%A, %b %d %Y") %></strong></div>
+                <div><i>End Date:</i> <strong><%= l.end_date.strftime("%A, %b %d %Y") %></strong></div>
+                <div><i>Locations:</i> <strong><%= l.locations %></strong></div>
+                <div><i>Description:</i> <strong><%= l.description %></strong></div>
+                <hr>
+                <%= link_to "View", league_path(l), class: 'btn btn-info', id: 'leagueList' %>
+                <div class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-remote="<%= edit_league_path(l.id) %> #edit_league_modal">Edit</div>
+                <%= link_to "Delete", l, method: :delete, class: "btn btn-danger", data: {confirm: "Are you sure you want to delete #{l.name}"}%>
+              </div>
+            </div>
+          </div>
+          <% end %>
         </div>
-      <% end %>
 
-      <button data-toggle="modal" data-target="#leagueModal" data-remote="<%= new_league_path %> #new_league_modal" class="btn btn-default btn-block">+ League</button><br>
-      <br>
-    </center>
+        <button data-toggle="modal" data-target="#leagueModal" data-remote="<%= new_league_path %> #new_league_modal" class="btn btn-default btn-block">+ League</button><br>
+        <br>
+      </center>
 
-    <%= link_to "Logout ", session_path(session), method: :delete %>
+      <%= link_to "Logout ", session_path(session), method: :delete %>
 
-    <div class="modal fade" id="leagueModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <div class="modal fade" id="leagueModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
-
 </div>
 
 

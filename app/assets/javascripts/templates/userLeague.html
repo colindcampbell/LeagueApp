@@ -27,11 +27,11 @@
 						dayInt(day.date) >= dateToday">
 							<div x-ng-repeat="game in day.games | orderBy:'time'" x-ng-if="game.day_id == day.id">
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.home_team_id == team.id">
-									<h4>( {{game.home_score}} ) {{team.name}}</h4>
+									<h4>( {{game.home_score}} ) <a href="/teams/{{team.id}}">{{team.name}}</a></h4>
 								</div>
 								-vs-
 								<div x-ng-repeat="team in league.teams" x-ng-if="game.away_team_id == team.id">
-									<h4>( {{game.away_score}} ) {{team.name}}</h4>
+									<h4>( {{game.away_score}} ) <a href="/teams/{{team.id}}">{{team.name}}</a></h4>
 								</div>
 								<div><h5>{{game.time | date:'shortTime'}} @ {{game.location}}</h5></div>
 								<div x-ng-if="game.half && !game.final"><i>Halftime</i></div>
