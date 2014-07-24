@@ -68,7 +68,7 @@
 									</span>
 								</h5>
 								<h5>
-									{{game.time | date:'shortTime'}} at {{game.location}}
+									{{game.date.split('-')[1]}}/{{game.date.split('-')[2].slice(0,2)}}/{{game.date.split('-')[0].slice(-2)}}, {{game.time | date:'shortTime'}} at {{game.location}}
 								</h5>
 								<div x-ng-if="game.half && !game.final"><i>Halftime</i></div>
 								<div x-ng-if="game.final"><i>Final Score</i></div>
@@ -82,7 +82,7 @@
 									</span>
 								</h5>
 								<h5>
-									{{game.time | date:'shortTime'}} at {{game.location}}
+									{{game.date.split('-')[1]}}/{{game.date.split('-')[2].slice(0,2)}}/{{game.date.split('-')[0].slice(-2)}}, {{game.time | date:'shortTime'}} at {{game.location}}
 								</h5>
 								<div x-ng-if="game.half && !game.final"><i>Halftime</i></div>
 								<div x-ng-if="game.final"><i>Final Score</i></div>

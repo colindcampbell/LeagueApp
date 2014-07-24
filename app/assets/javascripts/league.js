@@ -133,7 +133,9 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
     };
     $scope.saveDay = function() {
       $scope.day.league_id = league.id;
+      $scope.day.date.setHours(12);
       Restangular.all('days').post($scope.day).then(function(day) {
+        console.log(day);
         league.days.push(day);
         $modalInstance.dismiss('cancel');
         $scope.day = {};
@@ -188,7 +190,9 @@ leagueApp.controller('LeagueCtrl', ['$scope', 'Restangular', '$state', '$modal',
       $modalInstance.dismiss('cancel');
     };
     $scope.saveGame = function() {
+      $scope.game.time.setHours($scope.game.time.getHours()+1);
       Restangular.all('games').post($scope.game).then(function(game) {
+        console.log(game);
         //The Day index is the index after sorting, so I have to re-sort the league days (by parsing the dates into integers) to insert the game into the right index on the scope:
         league.days.sort(function(a,b){
           return parseInt(a.date.split('-')[0] + a.date.split('-')[1] + a.date.split('-')[2]) - parseInt(b.date.split('-')[0] + b.date.split('-')[1] + b.date.split('-')[2]);
